@@ -144,3 +144,25 @@ USING GIN (extra_metadata);
 CREATE INDEX idx_runs_metadata_gin
 ON sequencing_runs
 USING GIN (extra_metadata);
+
+CREATE TABLE id_concordance (
+    id SERIAL PRIMARY KEY,
+
+    entity_type TEXT NOT NULL,     -- project, sample, experiment, sequencing_run
+    internal_id TEXT NOT NULL,     -- XP00001, XS00001, etc.
+
+    external_system TEXT NOT NULL, -- Terra, Biobank, SequencingCenter, ClinicalDB
+    external_id TEXT NOT NULL,     -- the alternate ID
+
+    is_primary BOOLEAN DEFAULT false,  -- if this is preferred external ID
+    notes TEXT,
+
+    created_at TIMESTAMP DEFAULT now(),
+
+    UNIQUE(entity_type, external_system, external_id),
+    UNIQUE(entity_type, internal_id, external_system)
+);
+
+-- Index for fast lookup
+CREATE INDEX idx_id_concordance_lookup
+ON id_concordance (external_system, external_id);
