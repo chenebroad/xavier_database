@@ -16,11 +16,10 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE SEQUENCE project_seq START 1;
 CREATE SEQUENCE sample_seq START 1;
 CREATE SEQUENCE experiment_seq START 1;
-CREATE SEQUENCE sequencing_run_seq START 1;
-CREATE SEQUENCE file_seq START 1;
+CREATE SEQUENCE run_seq START 1;
 
 -- ==============================
--- 1️⃣ Projects Table
+-- Projects Table
 -- ==============================
 CREATE TABLE projects (
     id TEXT PRIMARY KEY DEFAULT ('XP' || LPAD(nextval('project_seq')::TEXT, 5, '0')),
@@ -31,7 +30,7 @@ CREATE TABLE projects (
 );
 
 -- ==============================
--- 2️⃣ Samples Table
+-- Samples Table
 -- ==============================
 CREATE TABLE samples (
     id TEXT PRIMARY KEY DEFAULT ('XS' || LPAD(nextval('sample_seq')::TEXT, 5, '0')),
@@ -40,6 +39,7 @@ CREATE TABLE samples (
     sample_type TEXT NOT NULL,
     subject_id TEXT,
     status TEXT DEFAULT 'active',
+	organism TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
@@ -47,56 +47,76 @@ CREATE TABLE samples (
 );
 
 -- ==============================
--- 3️⃣ Experiments Table
+-- Experiments Table
 -- ==============================
+
 CREATE TABLE experiments (
-    id TEXT PRIMARY KEY DEFAULT ('XE' || LPAD(nextval('experiment_seq')::TEXT, 5, '0')),
-    project_id TEXT REFERENCES projects(id) ON DELETE CASCADE,
-    experiment_name TEXT NOT NULL,
-    experiment_type TEXT NOT NULL,
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now(),
-    UNIQUE(project_id, experiment_name)
+    id TEXT PRIMARY KEY 
+        DEFAULT ('XE' || LPAD(nextval('experiment_seq')::TEXT, 5, '0')),
+        
+    sample_id TEXT NOT NULL REFERENCES samples(id) ON DELETE CASCADE,
+
+    assay_type TEXT NOT NULL,
+    library_protocol TEXT,
+    library_prep_date DATE,
+    library_version TEXT,
+	extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- ==============================
--- 4️⃣ Sample ↔ Experiment Junction Table
--- ==============================
-CREATE TABLE sample_experiments (
-    sample_id TEXT REFERENCES samples(id) ON DELETE CASCADE,
-    experiment_id TEXT REFERENCES experiments(id) ON DELETE CASCADE,
-    PRIMARY KEY (sample_id, experiment_id)
-);
-
--- ==============================
--- 5️⃣ Sequencing Runs
+-- Sequencing Runs
 -- ==============================
 CREATE TABLE sequencing_runs (
-    id TEXT PRIMARY KEY DEFAULT ('XR' || LPAD(nextval('sequencing_run_seq')::TEXT, 5, '0')),
-    experiment_id TEXT REFERENCES experiments(id) ON DELETE CASCADE,
-    platform TEXT,       -- e.g., NovaSeq, NextSeq
-    flowcell_id TEXT,
+    id TEXT PRIMARY KEY
+        DEFAULT ('XR' || LPAD(nextval('run_seq')::TEXT, 5, '0')),
+    
+    flowcell_id TEXT NOT NULL,
+    machine TEXT,
     run_date DATE,
+    
+    read_length TEXT,
+    sequencing_center TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- ==============================
--- 6️⃣ Files Table (GCS + Terra Integration)
+-- Experiment <-> Run Junction Table
+-- ==============================
+
+CREATE TABLE run_experiments (
+    run_id TEXT REFERENCES sequencing_runs(id) ON DELETE CASCADE,
+    experiment_id TEXT REFERENCES experiments(id) ON DELETE CASCADE,
+
+    lane TEXT,
+    index_sequence TEXT,
+	
+    PRIMARY KEY (run_id, experiment_id)
+);
+
+-- ==============================
+-- Files Table (GCS + Terra Integration)
 -- ==============================
 CREATE TABLE files (
-    id TEXT PRIMARY KEY DEFAULT ('XF' || LPAD(nextval('file_seq')::TEXT, 5, '0')),
-    sample_id TEXT REFERENCES samples(id) ON DELETE CASCADE,
-    sequencing_run_id TEXT REFERENCES sequencing_runs(id) ON DELETE SET NULL,
-    file_type TEXT NOT NULL,  -- fastq, bam, count_matrix, etc.
-    gcs_uri TEXT NOT NULL,    -- gs://bucket/path/file
+    id SERIAL PRIMARY KEY,
+
+    run_id TEXT NOT NULL,
+    experiment_id TEXT NOT NULL,
+
+    file_type TEXT,      -- FASTQ, BAM, count_matrix, etc.
+    file_path TEXT NOT NULL,
     checksum TEXT,
-    file_size BIGINT,
-    created_at TIMESTAMP DEFAULT now()
+	extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP DEFAULT NOW(),
+
+    FOREIGN KEY (run_id, experiment_id)
+        REFERENCES run_experiments(run_id, experiment_id)
+        ON DELETE CASCADE
 );
 
 -- ==============================
--- 7️⃣ Metadata Registry Table
+-- Metadata Registry Table
 -- Governs allowed keys for JSONB fields
 -- ==============================
 CREATE TABLE metadata_registry (
@@ -114,7 +134,7 @@ CREATE TABLE metadata_registry (
 );
 
 -- ==============================
--- 8️⃣ Schema Migrations Table (Audit & CI/CD)
+-- Schema Migrations Table (Audit & CI/CD)
 -- ==============================
 CREATE TABLE schema_migrations (
     id SERIAL PRIMARY KEY,
@@ -123,7 +143,7 @@ CREATE TABLE schema_migrations (
 );
 
 -- ==============================
--- 9️⃣ Indexes for Flexible Metadata
+-- Indexes for Flexible Metadata
 -- ==============================
 
 -- GIN index on sample extra_metadata JSONB for general querying
@@ -145,24 +165,24 @@ CREATE INDEX idx_runs_metadata_gin
 ON sequencing_runs
 USING GIN (extra_metadata);
 
+-- ID concordance
+
 CREATE TABLE id_concordance (
     id SERIAL PRIMARY KEY,
 
-    entity_type TEXT NOT NULL,     -- project, sample, experiment, sequencing_run
-    internal_id TEXT NOT NULL,     -- XP00001, XS00001, etc.
+    entity_type TEXT NOT NULL CHECK (
+        entity_type IN ('project', 'sample', 'experiment', 'run')
+    ),
 
-    external_system TEXT NOT NULL, -- Terra, Biobank, SequencingCenter, ClinicalDB
-    external_id TEXT NOT NULL,     -- the alternate ID
+    internal_id TEXT NOT NULL,
+    source_system TEXT NOT NULL,
+    external_id TEXT NOT NULL,
 
-    is_primary BOOLEAN DEFAULT false,  -- if this is preferred external ID
-    notes TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
 
-    created_at TIMESTAMP DEFAULT now(),
-
-    UNIQUE(entity_type, external_system, external_id),
-    UNIQUE(entity_type, internal_id, external_system)
+    UNIQUE (entity_type, source_system, external_id)
 );
 
 -- Index for fast lookup
 CREATE INDEX idx_id_concordance_lookup
-ON id_concordance (external_system, external_id);
+ON id_concordance (source_system, external_id);
