@@ -27,3 +27,78 @@ Experiment - defines a specific, reproducible protocol-driven operation applied 
 We should get on the same page for what each term means, and go forward recording/inserting existing data according to this schema.
 
 The idea being that instead of having separate ways to also ingest information / data, kept it in different places, we should try to have a central location for data entry, with the flexibility to only track the data we’re concerned about, but also fit into a schema that works for the rest of the group. 
+
+## Database Schema Overview
+
+```mermaid
+erDiagram
+
+    PROJECTS ||--o{ SAMPLES : contains
+    SAMPLES ||--o{ EXPERIMENTS : generates
+    EXPERIMENTS ||--o{ RUN_EXPERIMENTS : participates_in
+    SEQUENCING_RUNS ||--o{ RUN_EXPERIMENTS : includes
+    RUN_EXPERIMENTS ||--o{ FILES : produces
+    PROJECTS ||--o{ ID_CONCORDANCE : maps
+    SAMPLES ||--o{ ID_CONCORDANCE : maps
+    EXPERIMENTS ||--o{ ID_CONCORDANCE : maps
+    SEQUENCING_RUNS ||--o{ ID_CONCORDANCE : maps
+
+    PROJECTS {
+        text id PK
+        text name
+        text description
+        timestamp created_at
+    }
+
+    SAMPLES {
+        text id PK
+        text project_id FK
+        text sample_name
+        text organism
+        text tissue
+        timestamp created_at
+    }
+
+    EXPERIMENTS {
+        text id PK
+        text sample_id FK
+        text assay_type
+        text library_protocol
+        date library_prep_date
+        timestamp created_at
+    }
+
+    SEQUENCING_RUNS {
+        text id PK
+        text flowcell_id
+        text machine
+        date run_date
+        timestamp created_at
+    }
+
+    RUN_EXPERIMENTS {
+        text run_id FK
+        text experiment_id FK
+        text lane
+        text index_sequence
+    }
+
+    FILES {
+        int id PK
+        text run_id FK
+        text experiment_id FK
+        text file_type
+        text file_path
+        text checksum
+        timestamp created_at
+    }
+
+    ID_CONCORDANCE {
+        int id PK
+        text entity_type
+        text internal_id
+        text source_system
+        text external_id
+        timestamp created_at
+    }
+
