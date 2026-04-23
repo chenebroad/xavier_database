@@ -1,0 +1,6 @@
+flowcell_id,machine,run_date,read_length,sequencing_center,extra_metadata
+FC-00001,NovaSeq6000,2026-03-15,150,Broad Institute,"{""operator"": ""Alice"", ""kit_version"": ""v2""}"
+FC-00002,NextSeq2000,2026-03-16,100,MGH Genomics,"{""operator"": ""Bob""}"
+FC-00003,NovaSeq6000,2026-03-17,150,Stanford Genomics,"{""operator"": ""Carol"", ""notes"": ""high yield""}"
+FC-00004,NextSeq2000,2026-03-18,75,Broad Institute,"{""operator"": ""Alice"", ""kit_version"": ""v1""}"
+FC-00005,NovaSeq6000,2026-03-19,150,MGH Genomics,"{""operator"": ""Bob"", ""notes"": ""low cluster density""}"
