@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from typing import Optional, List
-from ..db import get_db
+from db import get_db
 
 router = APIRouter()
 

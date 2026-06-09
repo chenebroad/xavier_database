@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from ..db import get_db
-from ..models.seqexpjunc import SeqExpCreate
+from db import get_db
+from models.seqexpjunc import SeqExpCreate
 import psycopg2.extras
 import json
 

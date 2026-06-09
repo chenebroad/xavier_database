@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from ..db import get_db
-from ..models.files import FileCreate
+from db import get_db
+from models.files import FileCreate
 import psycopg2.extras
 import logging
 import json
