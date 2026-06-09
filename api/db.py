@@ -1,10 +1,16 @@
 import psycopg2
 import psycopg2.extras
-from .config import DB_CONFIG
+import os
 from typing import Generator
 
 def get_conn():
-    return psycopg2.connect(**DB_CONFIG)
+    return psycopg2.connect(
+        host=f"/cloudsql/{os.environ['CLOUDSQL_INSTANCE']}",
+        dbname=os.environ["DB_NAME"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASSWORD"],
+        port=5432
+    )
 
 def get_db() -> Generator:
     conn = get_conn()

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .endpoints import samples, projects, experiments, sequencingrun, seqexpjunc, files, query, quick_query
+from endpoints import samples, projects, experiments, sequencingrun, seqexpjunc, files, query, quick_query
 
 app = FastAPI(title="Xavier Database API")
 

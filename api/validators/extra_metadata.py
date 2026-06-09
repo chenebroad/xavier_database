@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from ..db import get_conn
+from db import get_conn
 import psycopg2.extras
 from functools import lru_cache
 
