@@ -4,7 +4,7 @@ steps:
       [
         "build",
         "-t",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/api:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/bigquery-kco/xavier-db/api:$COMMIT_SHA",
         "."
       ]
 
@@ -12,7 +12,7 @@ steps:
     args:
       [
         "push",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/api:$COMMIT_SHA"
+        "us-central1-docker.pkg.dev/bigquery-kco/xavier-db/api:$COMMIT_SHA"
       ]
 
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -23,7 +23,7 @@ steps:
         "deploy",
         "xavier-db-dev",
         "--image",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/api:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/bigquery-kco/xavier-db/api:$COMMIT_SHA",
         "--region",
         "us-central1",
         "--platform",
