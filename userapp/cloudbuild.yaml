@@ -32,3 +32,6 @@ steps:
 
 images:
   - 'us-central1-docker.pkg.dev/bigquery-kco/xavier-db/streamlit:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
