@@ -7,7 +7,7 @@ steps:
         'userapp/Dockerfile',
         '-t',
         'us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/streamlit:$COMMIT_SHA',
-        'streamlit'
+        'userapp'
       ] 
 
   - name: 'gcr.io/cloud-builders/docker'

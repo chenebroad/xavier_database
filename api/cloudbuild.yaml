@@ -6,8 +6,8 @@ steps:
         '-f',
         'api/Dockerfile',
         '-t',
-        'us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/streamlit:$COMMIT_SHA',
-        'streamlit'
+        'us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/api:$COMMIT_SHA',
+        'api'
       ]
 
   - name: "gcr.io/cloud-builders/docker"
