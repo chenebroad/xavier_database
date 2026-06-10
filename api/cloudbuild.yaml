@@ -2,10 +2,12 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
-        "build",
-        "-t",
-        "us-central1-docker.pkg.dev/bigquery-kco/xavier-db/api:$COMMIT_SHA",
-        "."
+        'build',
+        '-f',
+        'api/Dockerfile',
+        '-t',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/xavier-db/streamlit:$COMMIT_SHA',
+        'streamlit'
       ]
 
   - name: "gcr.io/cloud-builders/docker"
