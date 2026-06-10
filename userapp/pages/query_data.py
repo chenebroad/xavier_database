@@ -64,16 +64,19 @@ def normalize(row):
 
 edit_data = st.toggle("Edit Data")
 
-tab1, tab2 = st.tabs(
+tab1, tab2, tab3 = st.tabs(
     [
         "Browse Data",
-        "Quick Queries"
+        "Quick Queries",
+        "Custom Query"
     ]
 )
 
 # =====================================================
 # TAB 1 - BROWSE DATA
 # =====================================================
+
+st.header("🔍 Query Data")
 
 with tab1:
 
