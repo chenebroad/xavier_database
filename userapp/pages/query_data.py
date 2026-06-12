@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from api_client import query_data, run_quick_query, update_row
 
+st.header("🔍 Query Data")
+
 # =====================================================
 # CONFIG
 # =====================================================
@@ -75,8 +77,6 @@ tab1, tab2, tab3 = st.tabs(
 # =====================================================
 # TAB 1 - BROWSE DATA
 # =====================================================
-
-st.header("🔍 Query Data")
 
 with tab1:
 

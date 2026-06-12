@@ -19,6 +19,8 @@ CREATE SEQUENCE experiment_seq START 1;
 CREATE SEQUENCE run_seq START 1;
 CREATE SEQUENCE run_exp_seq START 1;
 CREATE SEQUENCE files_seq START 1;
+CREATE SEQUENCE cohort_seq START 1;
+CREATE SEQUENCE pool_seq START 1;
 
 -- ==============================
 -- Projects Table
@@ -43,11 +45,30 @@ CREATE TABLE samples (
         REFERENCES projects(id) ON DELETE CASCADE,
 
     sample_name TEXT NOT NULL,
-    subject_id TEXT,
-    status TEXT DEFAULT 'active',
     organism TEXT,
     tissue TEXT,
 
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
+
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+
+);
+
+-- ==============================
+-- Cohort Table
+-- ==============================
+CREATE TABLE cohorts (
+    id TEXT PRIMARY KEY 
+        DEFAULT ('XC' || LPAD(nextval('cohort_seq')::TEXT, 5, '0')),
+
+    sample_id TEXT NOT NULL
+        REFERENCES samples(id) ON DELETE CASCADE,
+
+    sample_name TEXT NOT NULL,
+    cohort_name TEXT NOT NULL,
+    pub_id TEXT,
+    freezerworks_id TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
 
     created_at TIMESTAMP DEFAULT now(),
@@ -73,6 +94,29 @@ CREATE TABLE experiments (
 
     extra_metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- ==============================
+-- Pools Table
+-- ==============================
+CREATE TABLE pools (
+    id TEXT PRIMARY KEY 
+        DEFAULT ('XPO' || LPAD(nextval('pool_seq')::TEXT, 5, '0')),
+
+    experiment_id TEXT NOT NULL
+        REFERENCES experiments(id) ON DELETE CASCADE,
+
+    sample_name TEXT NOT NULL,
+    subject_id TEXT,
+    status TEXT DEFAULT 'active',
+    organism TEXT,
+    tissue TEXT,
+
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
+
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+
 );
 
 -- ==============================
