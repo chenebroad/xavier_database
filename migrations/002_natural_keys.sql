@@ -107,10 +107,7 @@ CREATE TABLE pools (
         REFERENCES experiments(id) ON DELETE CASCADE,
 
     sample_name TEXT NOT NULL,
-    subject_id TEXT,
-    status TEXT DEFAULT 'active',
-    organism TEXT,
-    tissue TEXT,
+    pool_name TEXT NOT NULL,
 
     extra_metadata JSONB DEFAULT '{}'::jsonb,
 
