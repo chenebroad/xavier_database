@@ -88,6 +88,7 @@ with tab1:
     )
 
     core_columns = ENTITY_SCHEMAS[entity]["core"]
+    st.write(f"Core columns: {', '.join(core_columns)}")
     api_fn = ENTITY_SCHEMAS[entity]["api"]
 
     uploaded_file = st.file_uploader("Upload CSV", type=["csv"])

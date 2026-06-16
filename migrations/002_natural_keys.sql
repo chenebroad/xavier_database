@@ -45,6 +45,8 @@ CREATE TABLE samples (
         REFERENCES projects(id) ON DELETE CASCADE,
 
     sample_name TEXT NOT NULL,
+    subject_id TEXT,
+        REFERENCES subjects(id) ON DELETE CASCADE
     organism TEXT,
     tissue TEXT,
 
@@ -56,20 +58,43 @@ CREATE TABLE samples (
 );
 
 -- ==============================
+-- Subjects Table
+-- ==============================
+CREATE TABLE subjects (
+    id TEXT PRIMARY KEY
+        DEFAULT ('XSU' || LPAD(nextval('subject_seq')::TEXT, 5, '0')),    
+    pub_id TEXT,
+    freezerworks_id TEXT,
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+
+-- ==============================
 -- Cohort Table
 -- ==============================
 CREATE TABLE cohorts (
     id TEXT PRIMARY KEY 
         DEFAULT ('XC' || LPAD(nextval('cohort_seq')::TEXT, 5, '0')),
 
-    sample_id TEXT NOT NULL
-        REFERENCES samples(id) ON DELETE CASCADE,
+    cohort_name TEXT NOT NULL,
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
 
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+
+);
+
+-- ==============================
+-- Cohort Members Table
+-- ==============================
+CREATE TABLE cohorts_members (
+    sample_id TEXT NOT NULL
+        REFERENCES samples(id),
+    cohort_id TEXT NOT NULL
+        REFERENCES cohorts(id),
     sample_name TEXT NOT NULL,
     cohort_name TEXT NOT NULL,
-    pub_id TEXT,
-    freezerworks_id TEXT,
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
 
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
@@ -105,11 +130,25 @@ CREATE TABLE pools (
 
     experiment_id TEXT NOT NULL
         REFERENCES experiments(id) ON DELETE CASCADE,
-
-    sample_name TEXT NOT NULL,
+    
     pool_name TEXT NOT NULL,
 
     extra_metadata JSONB DEFAULT '{}'::jsonb,
+
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+
+);
+
+-- ==============================
+-- Pool Members Table
+-- ==============================
+CREATE TABLE pools_members (
+    experiment_id TEXT NOT NULL
+        REFERENCES experiments(id) ON DELETE CASCADE,
+    pool_id TEXT NOT NULL
+        REFERENCES pools(id) ON DELETE CASCADE,
+    pool_name TEXT NOT NULL,
 
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
