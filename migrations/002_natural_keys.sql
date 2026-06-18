@@ -149,7 +149,7 @@ CREATE TABLE pools_members (
     pool_id TEXT NOT NULL
         REFERENCES pools(id) ON DELETE CASCADE,
     pool_name TEXT NOT NULL,
-
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
 

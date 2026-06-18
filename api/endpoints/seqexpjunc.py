@@ -71,7 +71,6 @@ def add_sequencing_exp(seq_exp: SeqExpCreate, cur = Depends(get_db)):
 ## PATCH seqexp
 
 @router.patch("/seqexp/{run_experiment_id}")
-@router.patch("/run_experiments/{run_experiment_id}")
 def update_seqexp(run_experiment_id: str, payload: dict, cur = Depends(get_db)):
     IMMUTABLE = ["id", "experiment_id", "run_id", "created_at", "updated_at"]
 
