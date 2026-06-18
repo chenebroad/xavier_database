@@ -1,6 +1,9 @@
+from pathlib import Path
 import streamlit as st
 
 #Navigation only
+html_content = (Path(__file__).parent / "xavier_erd_panel.html").read_text()
+st.components.v1.html(html_content, height=750, scrolling=False)
 
 st.set_page_config(page_title="LIMS", layout="wide")
 
