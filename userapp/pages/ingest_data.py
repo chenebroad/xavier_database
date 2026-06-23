@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
-from api_client import create_project, create_sample, create_experiment, create_run, create_seqexp, create_file
+from api_client import create_project, create_sample, create_experiment, create_run, create_seqexp, create_file, create_cohort, create_cohort_member, create_pool, create_pool_member
 import math
 
 ENTITY_SCHEMAS = {
