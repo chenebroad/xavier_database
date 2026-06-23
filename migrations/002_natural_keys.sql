@@ -93,11 +93,9 @@ CREATE TABLE cohorts_members (
         REFERENCES samples(id),
     cohort_id TEXT NOT NULL
         REFERENCES cohorts(id),
-    sample_name TEXT NOT NULL,
-    cohort_name TEXT NOT NULL,
-
     created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
+    updated_at TIMESTAMP DEFAULT now(),
+    PRIMARY KEY (sample_id, cohort_id)
 
 );
 
@@ -127,14 +125,8 @@ CREATE TABLE experiments (
 CREATE TABLE pools (
     id TEXT PRIMARY KEY 
         DEFAULT ('XPO' || LPAD(nextval('pool_seq')::TEXT, 5, '0')),
-
-    experiment_id TEXT NOT NULL
-        REFERENCES experiments(id) ON DELETE CASCADE,
-    
     pool_name TEXT NOT NULL,
-
     extra_metadata JSONB DEFAULT '{}'::jsonb,
-
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
 
@@ -148,10 +140,10 @@ CREATE TABLE pools_members (
         REFERENCES experiments(id) ON DELETE CASCADE,
     pool_id TEXT NOT NULL
         REFERENCES pools(id) ON DELETE CASCADE,
-    pool_name TEXT NOT NULL,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
+    updated_at TIMESTAMP DEFAULT now(),
+    PRIMARY KEY (experiment_id, pool_id)
 
 );
 

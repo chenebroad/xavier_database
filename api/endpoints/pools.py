@@ -1,27 +1,38 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from models.cohorts import CohortCreate
+from models.pools import PoolCreate
 import psycopg2.extras
 import json
 
 router = APIRouter()
 
-## GET cohorts
+# ── Pools ─────────────────────────────────────────────────────────────────────
 
-@router.get("/cohorts")
-def get_cohorts(cur = Depends(get_db)):
-    
+@router.get("/pools")
+def get_pools(cur=Depends(get_db)):
     cur.execute("""
         SELECT *
-        FROM cohorts
+        FROM pools
         ORDER BY created_at DESC
     """)
-
     return cur.fetchall()
 
-## PATCH cohorts
-@router.patch("/cohorts/{cohort_id}")
-def update_cohort(cohort_id: str, payload: dict, cur = Depends(get_db)):
+
+@router.post("/pools")
+def add_pool(pool: PoolCreate, cur=Depends(get_db)):
+    cur.execute("""
+        INSERT INTO pools (pool_name, extra_metadata)
+        VALUES (%s, %s)
+        RETURNING *
+    """, (
+        pool.pool_name,
+        psycopg2.extras.Json(pool.extra_metadata or {})
+    ))
+    return cur.fetchone()
+
+
+@router.patch("/pools/{pool_id}")
+def update_pool(pool_id: str, payload: dict, cur=Depends(get_db)):
     IMMUTABLE = ["id", "created_at", "updated_at"]
     payload = {k: v for k, v in payload.items() if k not in IMMUTABLE}
 
@@ -36,27 +47,13 @@ def update_cohort(cohort_id: str, payload: dict, cur = Depends(get_db)):
     set_clause = ", ".join([f"{k} = %s" for k in fields])
 
     cur.execute(f"""
-        UPDATE cohorts
+        UPDATE pools
         SET {set_clause}, updated_at = CURRENT_TIMESTAMP
         WHERE id = %s
         RETURNING *
-    """, (*values, cohort_id))
+    """, (*values, pool_id))
 
     result = cur.fetchone()
     if not result:
-        raise HTTPException(404, f"Cohort {cohort_id} not found")
+        raise HTTPException(404, f"Pool '{pool_id}' not found")
     return result
-
-## POST cohorts
-@router.post("/cohorts")
-def add_cohort(cohort: CohortCreate, cur = Depends(get_db)):
-    cur.execute("""
-        INSERT INTO cohorts (cohort_name, extra_metadata)
-        VALUES (%s, %s, %s, %s)
-        RETURNING *
-    """, (
-        cohort.cohort_name,
-        psycopg2.extras.Json(cohort.extra_metadata or {})
-    ))
-
-    return cur.fetchone()

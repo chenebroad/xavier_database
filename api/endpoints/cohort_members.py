@@ -18,46 +18,45 @@ def get_cohort_members(cur=Depends(get_db)):
     
     return cur.fetchall()
 
-## PATCH cohort_members
-@router.patch("/cohort_members/{member_id}")
-def update_cohort_member(member_id: str, payload: dict, cur = Depends(get_db)):
-    IMMUTABLE = ["id", "created_at", "updated_at"]
-
-    payload = {k: v for k, v in payload.items() if k not in IMMUTABLE}
-
-    if not payload:
-        raise HTTPException(400, "No valid fields to update")
-
-    # Serialize extra_metadata if present
-    if "extra_metadata" in payload and payload["extra_metadata"] is not None:
-        payload["extra_metadata"] = json.dumps(payload["extra_metadata"])
-
-    # Build SQL
-    fields = list(payload.keys())
-    values = list(payload.values())
-    set_clause = ", ".join([f"{k} = %s" for k in fields])
-
-    query = f"""
-        UPDATE cohort_members
-        SET {set_clause}, updated_at = CURRENT_TIMESTAMP
-        WHERE id = %s
-        RETURNING *
-    """
-
-    cur.execute(query, (*values, member_id))
-    result = cur.fetchone()
-
 ## POST cohort_members
+@router.post("/cohort_members")
 def add_cohort_member(member: CohortMembersCreate, cur = Depends(get_db)):
+    # Resolve cohort_name → cohort_id
+    cur.execute("SELECT id FROM cohorts WHERE cohort_name = %s", (member.cohort_name,))
+    cohort = cur.fetchone()
+    if not cohort:
+        raise HTTPException(404, f"Cohort '{member.cohort_name}' not found")
+
+    # Resolve sample_name → sample_id
+    cur.execute("SELECT id FROM samples WHERE sample_name = %s", (member.sample_name,))
+    sample = cur.fetchone()
+    if not sample:
+        raise HTTPException(404, f"Sample '{member.sample_name}' not found")
+
+    # Guard against duplicate membership
     cur.execute("""
-        INSERT INTO cohort_members (cohort_id, member_id, member_type, extra_metadata)
-        VALUES (%s, %s, %s, %s)
+        SELECT 1 FROM cohort_members
+        WHERE cohort_id = %s AND sample_id = %s
+    """, (cohort["id"], sample["id"]))
+    if cur.fetchone():
+        raise HTTPException(409, f"Sample '{member.sample_name}' is already in cohort '{member.cohort_name}'")
+
+    cur.execute("""
+        INSERT INTO cohort_members (cohort_id, sample_id)
+        VALUES (%s, %s)
         RETURNING *
-    """, (
-        member.cohort_id,
-        member.member_id,
-        member.member_type,
-        json.dumps(member.extra_metadata) if member.extra_metadata else None
-    ))
+    """, (cohort["id"], sample["id"]))
 
     return cur.fetchone()
+
+@router.delete("/cohort_members")
+def remove_cohort_member(cohort_name: str, sample_name: str, cur=Depends(get_db)):
+    cur.execute("""
+        DELETE FROM cohort_members
+        WHERE cohort_id = (SELECT id FROM cohorts WHERE cohort_name = %s)
+        AND sample_id = (SELECT id FROM samples WHERE sample_name = %s)
+        RETURNING *
+    """, (cohort_name, sample_name))
+
+    if not cur.fetchone():
+        raise HTTPException(404, "Membership not found")

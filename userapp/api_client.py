@@ -99,3 +99,15 @@ def create_seqexp(payload):
 
 def create_file(payload):
     return post_with_debug("files", payload)
+
+def create_cohort(payload):
+    return post_with_debug("cohorts", payload)
+
+def create_cohort_member(payload):
+    return post_with_debug("cohort_members", payload)
+
+def create_pool(payload):
+    return post_with_debug("pools", payload)
+
+def create_pool_member(payload):
+    return post_with_debug("pool_members", payload)

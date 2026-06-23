@@ -30,7 +30,25 @@ ENTITY_SCHEMAS = {
                  "gcs_uri", "gcs_bucket", "file_path", "size_bytes",
                  "file_type", "file_format", "checksum_md5"],
         "api": create_file
-    }
+    },
+    "cohorts": {
+        "core": ["cohort_name", "cohort_type"],
+        "api": create_cohort
+    },
+    "cohort_members": {
+        "core": ["cohort_name", "sample_name"],
+        "api": create_cohort_member,
+        "no_metadata": True
+    },
+    "pools": {
+        "core": ["pool_name"],
+        "api": create_pool
+    },
+    "pool_members": {
+        "core": ["pool_name", "sample_name", "assay_type", "library_prep_date"],
+        "api": create_pool_member,
+        "no_metadata": True
+    },
 }
 
 st.title("📥 Ingest Data")
@@ -50,7 +68,7 @@ def sanitize_payload(obj):
     return obj
 
 
-def build_payload(row_dict, core_columns):
+def build_payload(row_dict, core_columns, no_metadata=False):
     core = {}
     metadata = {}
 
@@ -59,10 +77,12 @@ def build_payload(row_dict, core_columns):
 
         if k in core_columns:
             core[k] = v
-        elif v not in ["", None]:
+        elif not no_metadata and v not in ["", None]:
             metadata[k] = v
 
-    core["extra_metadata"] = metadata
+    if not no_metadata:
+        core["extra_metadata"] = metadata
+
     return sanitize_payload(core)
 
 
