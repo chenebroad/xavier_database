@@ -2,8 +2,7 @@ from fastapi import FastAPI
 from endpoints import (samples, projects, experiments, 
 cohorts, cohort_members, pools, pool_members,
 subjects, sample_source, sequencingrun, 
-seqexpjunc, files, query, quick_query)
-from routers import dashboard
+seqexpjunc, files, query, quick_query, dashboard)
 
 app = FastAPI(title="Xavier Database API")
 
