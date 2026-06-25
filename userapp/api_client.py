@@ -111,3 +111,9 @@ def create_pool(payload):
 
 def create_pool_member(payload):
     return post_with_debug("pool_members", payload)
+
+def create_subject(payload):
+    return post_with_debug("subjects", payload)
+
+def create_sample_source(payload):
+    return post_with_debug("sample_sources", payload)
