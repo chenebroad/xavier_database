@@ -5,7 +5,7 @@ from api_client import (
     create_project, create_sample, create_experiment,
     create_run, create_seqexp, create_file,
     create_cohort, create_cohort_member,
-    create_pool, create_pool_member
+    create_pool, create_pool_member, create_subject, create_sample_source
 )
 import math
 
