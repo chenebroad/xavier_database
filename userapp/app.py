@@ -10,7 +10,7 @@ page3 = st.Page("pages/query_data.py", title="Query")
 page4 = st.Page("pages/data_dictionary.py", title="Data Dictionary")
 page5 = st.Page("pages/dashboard.py", title="Dashboard")
 page6 = st.Page("pages/reference.py", title="Reference ERD")
-pg = st.navigation([main_page, page2, page3, page4, page5])
+pg = st.navigation([main_page, page2, page3, page4, page5, page6])
 
 pg.run()
 

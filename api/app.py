@@ -24,7 +24,7 @@ app.include_router(files.router)
 # SUPPLEMENTARY ROUTERS for QUERY
 app.include_router(query.router)
 app.include_router(quick_query.router)
-app.include_router(dashboard.router, prefix="/api")
+app.include_router(dashboard.router)
 
 @app.get("/")
 def root():

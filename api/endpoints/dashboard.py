@@ -3,7 +3,6 @@ from db import get_db
 
 router = APIRouter()
 
-
 @router.get("/dashboard/projects")
 def get_project_summary(cur=Depends(get_db)):
     cur.execute("""
