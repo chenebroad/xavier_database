@@ -45,8 +45,8 @@ CREATE TABLE samples (
         REFERENCES projects(id) ON DELETE CASCADE,
 
     sample_name TEXT NOT NULL,
-    subject_id TEXT,
         REFERENCES subjects(id) ON DELETE CASCADE
+    sample_type TEXT,
     organism TEXT,
     tissue TEXT,
 
@@ -68,6 +68,17 @@ CREATE TABLE subjects (
     extra_metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
+);
+
+-- ==============================
+-- Sample sources Table
+-- ==============================
+
+CREATE TABLE sample_sources (
+    sample_id  TEXT NOT NULL REFERENCES samples(id) ON DELETE CASCADE,
+    subject_id TEXT NOT NULL REFERENCES subjects(id),
+    added_at   TIMESTAMPTZ DEFAULT now(),
+    PRIMARY KEY (sample_id, subject_id)
 );
 
 -- ==============================

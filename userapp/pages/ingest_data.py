@@ -63,6 +63,17 @@ ENTITY_SCHEMAS = {
         "api": create_pool_member,
         "no_metadata": True
     },
+    "subjects": {
+        "required": ["pub_id", "freezerworks_id"],  
+        "optional": [],  
+        "api": create_subject,  
+    },
+    "sample_sources": {
+        "required": ["sample_name", "pub_id", "freezerworks_id"],
+        "optional": [],
+        "api": create_sample_source,
+        "no_metadata": True
+    }
 }
 
 st.title("📥 Ingest Data")
