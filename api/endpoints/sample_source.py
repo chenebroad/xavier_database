@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from models.sample_sources import SampleSourceCreate
+from models.sample_source import SampleSourceCreate
 
 router = APIRouter()
 
