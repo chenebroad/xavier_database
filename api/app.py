@@ -5,7 +5,6 @@ subjects, sample_source, sequencingrun,
 seqexpjunc, files, query, quick_query)
 from routers import dashboard
 
-
 app = FastAPI(title="Xavier Database API")
 
 # Include routers

@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 from pathlib import Path
 
-API_BASE = st.secrets["API_BASE"]
+API_BASE = "https://xavier-db-dev-134042435125.us-central1.run.app"
 
 
 def fetch(endpoint: str):

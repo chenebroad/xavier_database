@@ -15,6 +15,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- ------------------------------
 CREATE SEQUENCE project_seq START 1;
 CREATE SEQUENCE sample_seq START 1;
+CREATE SEQUENCE subject_seq START 1;
 CREATE SEQUENCE experiment_seq START 1;
 CREATE SEQUENCE run_seq START 1;
 CREATE SEQUENCE run_exp_seq START 1;
