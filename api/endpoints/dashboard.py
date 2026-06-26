@@ -13,7 +13,7 @@ def get_project_summary(cur=Depends(get_db)):
             p.created_at,
             COUNT(DISTINCT sa.id)           AS sample_count,
             COUNT(DISTINCT e.id)            AS experiment_count,
-            COUNT(DISTINCT re.run_id)       AS run_count,
+            COUNT(DISTINCT re.id)           AS run_count,
             COUNT(DISTINCT f.id)            AS file_count,
             COUNT(DISTINCT ss.subject_id)   AS subject_count,
             COUNT(DISTINCT sa.id) FILTER (
@@ -26,8 +26,8 @@ def get_project_summary(cur=Depends(get_db)):
         LEFT JOIN samples sa         ON p.id = sa.project_id
         LEFT JOIN experiments e      ON sa.id = e.sample_id
         LEFT JOIN run_experiments re  ON e.id = re.experiment_id
-        LEFT JOIN files f             ON re.run_id = f.run_id
-        LEFT JOIN sample_sources ss   ON sa.id = ss.sample_id
+        LEFT JOIN files f            ON f.run_experiment_id = re.id
+        LEFT JOIN sample_sources ss  ON sa.id = ss.sample_id
         GROUP BY p.id, p.project_name, p.description, p.created_at
         ORDER BY p.created_at DESC
     """)
@@ -36,7 +36,6 @@ def get_project_summary(cur=Depends(get_db)):
 
 @router.get("/dashboard/projects/{project_name}")
 def get_project_detail(project_name: str, cur=Depends(get_db)):
-    # Confirm project exists
     cur.execute("""
         SELECT id FROM projects WHERE project_name = %s
     """, (project_name,))
@@ -54,24 +53,22 @@ def get_project_detail(project_name: str, cur=Depends(get_db)):
             sa.status,
             COUNT(DISTINCT ss.subject_id)       AS subject_count,
             COUNT(DISTINCT e.id)                AS experiment_count,
-            COUNT(DISTINCT re.run_id)           AS run_count,
+            COUNT(DISTINCT re.id)               AS run_count,
             COUNT(DISTINCT f.id)                AS file_count,
-            -- completeness flags
             (COUNT(DISTINCT e.id) > 0)          AS has_experiment,
-            (COUNT(DISTINCT re.run_id) > 0)     AS has_run,
+            (COUNT(DISTINCT re.id) > 0)         AS has_run,
             (COUNT(DISTINCT f.id) > 0)          AS has_files,
             (COUNT(DISTINCT ss.subject_id) > 0) AS has_subjects,
-            -- assay types as array for display
             COALESCE(
                 array_agg(DISTINCT e.assay_type)
                 FILTER (WHERE e.assay_type IS NOT NULL),
                 '{}'
             )                                   AS assay_types
         FROM samples sa
-        LEFT JOIN sample_sources ss   ON sa.id = ss.sample_id
-        LEFT JOIN experiments e       ON sa.id = e.sample_id
-        LEFT JOIN run_experiments re   ON e.id = re.experiment_id
-        LEFT JOIN files f             ON re.run_id = f.run_id
+        LEFT JOIN sample_sources ss  ON sa.id = ss.sample_id
+        LEFT JOIN experiments e      ON sa.id = e.sample_id
+        LEFT JOIN run_experiments re  ON e.id = re.experiment_id
+        LEFT JOIN files f            ON f.run_experiment_id = re.id
         WHERE sa.project_id = %s
         GROUP BY sa.id, sa.sample_name, sa.sample_type,
                  sa.organism, sa.tissue, sa.status

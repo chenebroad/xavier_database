@@ -25,7 +25,6 @@ def completeness_score(row: dict) -> int:
         bool(row.get("has_subjects")),
         bool(row.get("has_experiment")),
         bool(row.get("has_run")),
-        bool(row.get("has_files")),
     ])
 
 
@@ -147,8 +146,8 @@ if selected:
             "Completeness": st.column_config.ProgressColumn(
                 "Completeness",
                 min_value=0,
-                max_value=4,
-                format="%d / 4",
+                max_value=3,
+                format="%d / 3",
             ),
             "Type": st.column_config.TextColumn("Type"),
             "Status": st.column_config.TextColumn("Status"),

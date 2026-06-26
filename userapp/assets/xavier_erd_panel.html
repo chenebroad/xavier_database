@@ -19,23 +19,18 @@
     --accent: #4f9cf9;
     --accent-glow: rgba(79,156,249,0.15);
     --teal: #2dd4bf;
-    --teal-bg: rgba(45,212,191,0.1);
     --amber: #fbbf24;
-    --amber-bg: rgba(251,191,36,0.1);
     --coral: #fb7185;
-    --coral-bg: rgba(251,113,133,0.1);
     --purple: #a78bfa;
-    --purple-bg: rgba(167,139,250,0.1);
     --green: #4ade80;
-    --green-bg: rgba(74,222,128,0.1);
-    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 13px;
     min-height: 100vh;
     display: flex;
@@ -49,10 +44,11 @@
     align-items: center;
     gap: 12px;
     background: var(--bg2);
+    flex-shrink: 0;
   }
 
   .logo {
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 11px;
     color: var(--accent);
     letter-spacing: 0.12em;
@@ -61,10 +57,10 @@
 
   .logo span { color: var(--text-muted); }
 
-  header p {
+  .header-hint {
+    margin-left: auto;
     color: var(--text-muted);
     font-size: 12px;
-    margin-left: auto;
   }
 
   .layout {
@@ -80,8 +76,7 @@
     position: relative;
     overflow: hidden;
     background: var(--bg);
-    background-image:
-      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
     background-size: 24px 24px;
   }
 
@@ -93,13 +88,12 @@
 
   /* Sidebar */
   #sidebar {
-    width: 280px;
+    width: 300px;
     border-left: 1px solid var(--border);
     background: var(--bg2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: width 0.2s ease;
   }
 
   .sidebar-header {
@@ -108,10 +102,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
-  .sidebar-header h2 {
-    font-family: var(--font);
+  .sidebar-title {
+    font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -122,25 +118,31 @@
   #ingest-btn {
     display: none;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     padding: 5px 10px;
     background: var(--accent);
     color: #fff;
     border: none;
     border-radius: 5px;
     font-size: 11px;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
+    white-space: nowrap;
     transition: opacity 0.15s;
   }
 
   #ingest-btn:hover { opacity: 0.85; }
   #ingest-btn.visible { display: flex; }
 
-  .sidebar-body { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .sidebar-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+  }
 
+  /* Placeholder */
   .placeholder {
     color: var(--text-dim);
     font-size: 12px;
@@ -155,11 +157,12 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-family: var(--font);
+    font-family: var(--font-mono);
   }
 
+  /* Table detail */
   .table-name {
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 4px;
@@ -169,54 +172,79 @@
     color: var(--text-muted);
     font-size: 12px;
     line-height: 1.5;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
-  .fields-label {
-    font-family: var(--font);
+  .junction-note {
+    padding: 6px 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+    border-left: 2px solid rgba(255,255,255,0.15);
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* Field sections */
+  .section-label {
+    font-family: var(--font-mono);
     font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-dim);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-label:first-of-type { margin-top: 0; }
+
+  .req-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+    flex-shrink: 0;
+  }
+
+  .opt-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
   }
 
   .field-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 5px 0;
+    gap: 6px;
+    padding: 4px 0;
     border-bottom: 1px solid var(--border);
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 11px;
   }
 
   .field-row:last-child { border-bottom: none; }
 
-  .field-name { color: var(--text); flex: 1; }
-  .field-type { color: var(--text-dim); font-size: 10px; }
+  .field-name { color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .field-type { color: var(--text-dim); font-size: 10px; flex-shrink: 0; }
 
   .badge {
     font-size: 9px;
     padding: 1px 5px;
     border-radius: 3px;
-    font-family: var(--font);
-    letter-spacing: 0.05em;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
   }
 
-  .badge-pk { background: var(--amber-bg); color: var(--amber); }
-  .badge-fk { background: var(--accent-glow); color: var(--accent); }
+  .badge-pk  { background: rgba(251,191,36,0.15);  color: var(--amber); }
+  .badge-fk  { background: rgba(79,156,249,0.12);  color: var(--accent); }
+  .badge-sys { background: rgba(255,255,255,0.05); color: var(--text-dim); }
 
-  .relations-label {
-    font-family: var(--font);
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-top: 14px;
-    margin-bottom: 6px;
-  }
-
+  /* Relations */
   .rel-row {
     display: flex;
     align-items: center;
@@ -230,39 +258,27 @@
   }
 
   .rel-row:hover { color: var(--accent); }
+  .rel-arrow { color: var(--text-dim); font-family: var(--font-mono); }
 
-  .rel-arrow { color: var(--text-dim); font-family: var(--font); }
-
-  /* SVG node styles */
+  /* SVG */
   .erd-node { cursor: pointer; }
-  .erd-node .node-bg {
-    rx: 6;
-    transition: all 0.15s;
-  }
-  .erd-node:hover .node-bg,
-  .erd-node.active .node-bg {
-    filter: brightness(1.3);
-  }
-
   .conn-line {
     fill: none;
-    stroke: rgba(255,255,255,0.08);
+    stroke: rgba(255,255,255,0.07);
     stroke-width: 1.5;
-    transition: stroke 0.15s, stroke-width 0.15s;
+    transition: stroke 0.15s;
   }
-
   .conn-line.highlighted {
     stroke: var(--accent);
     stroke-width: 2;
-    stroke-opacity: 0.6;
+    stroke-opacity: 0.55;
   }
-
   .group-label {
-    font-family: var(--font);
+    font-family: var(--font-mono, monospace);
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    fill: rgba(255,255,255,0.2);
+    fill: rgba(255,255,255,0.18);
   }
 </style>
 </head>
@@ -272,7 +288,7 @@
   <div class="logo">Xavier<span>/</span>LIMS</div>
   <div style="width:1px;height:16px;background:var(--border)"></div>
   <span style="color:var(--text-muted);font-size:12px">Schema reference</span>
-  <p>Click any table to explore</p>
+  <span class="header-hint">Click any table to explore · red = required · gray = optional</span>
 </header>
 
 <div class="layout">
@@ -282,208 +298,163 @@
 
   <div id="sidebar">
     <div class="sidebar-header">
-      <h2 id="sidebar-title">No table selected</h2>
-      <a id="ingest-btn" href="#" target="_blank">
-        ↗ Ingest data
-      </a>
+      <span class="sidebar-title" id="sidebar-title">No table selected</span>
+      <a id="ingest-btn" href="#" target="_blank">↗ Ingest</a>
     </div>
     <div class="sidebar-body" id="sidebar-body">
       <p class="placeholder">
         <strong>Schema explorer</strong>
-        Select a table in the diagram to see its fields, types, and relationships.<br><br>
-        Click a related table in the panel to jump to it. Use the ingest button to open the data entry form for that table in your Streamlit app.
+        Select a table to see its fields and relationships.<br><br>
+        <span style="color:var(--coral)">●</span> Required fields must be present on ingest.<br>
+        <span style="color:var(--text-dim)">●</span> Optional fields default or can be omitted.<br><br>
+        Click a related table to jump to it. Use the ingest button to open the data entry form for that table.
       </p>
     </div>
   </div>
 </div>
 
 <script>
-// ── Data model ────────────────────────────────────────────────────────────────
-const STREAMLIT_BASE = 'http://localhost:8501'; // ← update to your deployed URL
+const STREAMLIT_BASE = 'http://localhost:8501';
 
+// ── Table definitions ─────────────────────────────────────────────────────────
 const TABLES = {
   projects: {
-    label: 'Projects',
-    color: '#4f9cf9', colorBg: '#0d1f3c',
-    desc: 'Top-level scientific project or study. All samples trace back to a project.',
-    fields: [
-      { name: 'project_id', type: 'TEXT', pk: true },
-      { name: 'project_name', type: 'TEXT' },
-      { name: 'description', type: 'TEXT' },
-      { name: 'extra_metadata', type: 'JSONB' },
-      { name: 'created_at', type: 'TIMESTAMPTZ' },
-    ],
+    label: 'Projects', color: '#4f9cf9', colorBg: '#0d1f3c',
+    desc: 'Top-level scientific project or study.',
+    required: ['project_name'],
+    optional: ['description'],
+    system:   ['id', 'created_at', 'updated_at', 'extra_metadata'],
     relations: ['samples'],
   },
   subjects: {
-    label: 'Subjects',
-    color: '#a78bfa', colorBg: '#1a1435',
+    label: 'Subjects', color: '#a78bfa', colorBg: '#1a1435',
     desc: 'A patient or donor. Groups biological samples from the same individual across timepoints.',
-    fields: [
-      { name: 'subject_id', type: 'TEXT', pk: true },
-      { name: 'pub_id', type: 'TEXT' },
-      { name: 'freezerworks_id', type: 'TEXT' },
-      { name: 'added_at', type: 'TIMESTAMPTZ' },
-    ],
-    relations: ['samples'],
+    required: ['pub_id', 'freezerworks_id'],
+    optional: [],
+    system:   ['id', 'added_at', 'extra_metadata'],
+    relations: ['sample_sources'],
   },
   samples: {
-    label: 'Samples',
-    color: '#2dd4bf', colorBg: '#0a2028',
-    desc: 'A biological specimen. Belongs to a project and optionally a subject.',
-    fields: [
-      { name: 'sample_id', type: 'TEXT', pk: true },
-      { name: 'project_id', type: 'TEXT', fk: 'projects' },
-      { name: 'subject_id', type: 'TEXT', fk: 'subjects' },
-      { name: 'sample_name', type: 'TEXT' },
-      { name: 'organism', type: 'TEXT' },
-      { name: 'tissue', type: 'TEXT' },
-      { name: 'timepoint', type: 'TEXT' },
-      { name: 'status', type: 'TEXT' },
-      { name: 'extra_metadata', type: 'JSONB' },
-    ],
-    relations: ['projects', 'subjects', 'experiments', 'cohort_members'],
+    label: 'Samples', color: '#2dd4bf', colorBg: '#0a2028',
+    desc: 'A biological specimen. Belongs to a project. Subject linkage is through sample_sources.',
+    required: ['sample_name', 'project_name', 'organism', 'tissue'],
+    optional: ['sample_type', 'status'],
+    system:   ['id', 'project_id', 'created_at', 'updated_at', 'extra_metadata'],
+    relations: ['projects', 'sample_sources', 'experiments', 'cohort_members'],
+  },
+  sample_sources: {
+    label: 'Sample sources', color: '#a78bfa', colorBg: '#110e2a',
+    desc: 'Junction table. Links subjects to samples. One pooled sample can have many subjects.',
+    required: ['sample_name', 'subject_pub_id'],
+    optional: [],
+    system:   ['sample_id', 'subject_id', 'added_at'],
+    relations: ['samples', 'subjects'],
+    junction: true,
   },
   cohorts: {
-    label: 'Cohorts',
-    color: '#fbbf24', colorBg: '#241a04',
+    label: 'Cohorts', color: '#fbbf24', colorBg: '#241a04',
     desc: 'A named grouping of biological samples — e.g. Tumor Cohort, Control Cohort.',
-    fields: [
-      { name: 'cohort_id', type: 'TEXT', pk: true },
-      { name: 'cohort_name', type: 'TEXT' },
-      { name: 'cohort_type', type: 'TEXT' },
-      { name: 'description', type: 'TEXT' },
-      { name: 'extra_metadata', type: 'JSONB' },
-    ],
+    required: ['cohort_name'],
+    optional: ['cohort_type'],
+    system:   ['id', 'created_at', 'updated_at', 'extra_metadata'],
     relations: ['cohort_members'],
   },
   cohort_members: {
-    label: 'Cohort members',
-    color: '#fbbf24', colorBg: '#1c1504',
-    desc: 'Junction table. Links samples to cohorts. Composite PK — no surrogate ID needed.',
-    fields: [
-      { name: 'cohort_id', type: 'TEXT', fk: 'cohorts' },
-      { name: 'sample_id', type: 'TEXT', fk: 'samples' },
-      { name: 'added_at', type: 'TIMESTAMPTZ' },
-    ],
+    label: 'Cohort members', color: '#fbbf24', colorBg: '#1c1504',
+    desc: 'Junction table. Links samples to cohorts. Many-to-many.',
+    required: ['cohort_name', 'sample_name'],
+    optional: [],
+    system:   ['cohort_id', 'sample_id', 'added_at'],
     relations: ['cohorts', 'samples'],
+    junction: true,
   },
   experiments: {
-    label: 'Experiments',
-    color: '#4ade80', colorBg: '#0a1f10',
-    desc: 'A library prep or assay performed on a sample. e.g. RNA-seq, ATAC-seq, WGS.',
-    fields: [
-      { name: 'experiment_id', type: 'TEXT', pk: true },
-      { name: 'sample_id', type: 'TEXT', fk: 'samples' },
-      { name: 'assay_type', type: 'TEXT' },
-      { name: 'library_protocol', type: 'TEXT' },
-      { name: 'library_version', type: 'TEXT' },
-      { name: 'library_prep_date', type: 'DATE' },
-      { name: 'extra_metadata', type: 'JSONB' },
-    ],
+    label: 'Experiments', color: '#4ade80', colorBg: '#0a1f10',
+    desc: 'A library prep or assay performed on a sample.',
+    required: ['sample_name', 'assay_type', 'library_prep_date'],
+    optional: ['library_protocol', 'library_version'],
+    system:   ['id', 'sample_id', 'created_at', 'updated_at', 'extra_metadata'],
     relations: ['samples', 'run_experiments', 'pool_members'],
   },
   pools: {
-    label: 'Pools',
-    color: '#fb7185', colorBg: '#200b10',
+    label: 'Pools', color: '#fb7185', colorBg: '#200b10',
     desc: 'A physical pooling of experiment libraries before sequencing.',
-    fields: [
-      { name: 'pool_id', type: 'TEXT', pk: true },
-      { name: 'pool_name', type: 'TEXT' },
-      { name: 'description', type: 'TEXT' },
-      { name: 'extra_metadata', type: 'JSONB' },
-    ],
+    required: ['pool_name'],
+    optional: [],
+    system:   ['id', 'created_at', 'updated_at', 'extra_metadata'],
     relations: ['pool_members'],
   },
   pool_members: {
-    label: 'Pool members',
-    color: '#fb7185', colorBg: '#1a080c',
-    desc: 'Junction table. Links experiments to pools. Can carry physical metadata like input volume.',
-    fields: [
-      { name: 'pool_id', type: 'TEXT', fk: 'pools' },
-      { name: 'experiment_id', type: 'TEXT', fk: 'experiments' },
-      { name: 'input_volume_ul', type: 'NUMERIC' },
-      { name: 'added_at', type: 'TIMESTAMPTZ' },
-    ],
+    label: 'Pool members', color: '#fb7185', colorBg: '#1a080c',
+    desc: 'Junction table. Links experiments to pools.',
+    required: ['pool_name', 'sample_name', 'assay_type', 'library_prep_date'],
+    optional: [],
+    system:   ['pool_id', 'experiment_id', 'added_at'],
     relations: ['pools', 'experiments'],
+    junction: true,
   },
   run_experiments: {
-    label: 'Run experiments',
-    color: '#94a3b8', colorBg: '#141920',
+    label: 'Run experiments', color: '#94a3b8', colorBg: '#141920',
     desc: 'Links experiments to sequencing runs. Carries lane and index metadata.',
-    fields: [
-      { name: 'experiment_id', type: 'TEXT', fk: 'experiments' },
-      { name: 'run_id', type: 'TEXT', fk: 'sequencing_runs' },
-      { name: 'lane', type: 'TEXT' },
-      { name: 'index_sequence', type: 'TEXT' },
-    ],
+    required: ['sample_name', 'assay_type', 'library_prep_date', 'flowcell_id', 'lane', 'index_sequence'],
+    optional: [],
+    system:   ['id', 'experiment_id', 'run_id', 'created_at', 'extra_metadata'],
     relations: ['experiments', 'sequencing_runs'],
   },
   sequencing_runs: {
-    label: 'Sequencing runs',
-    color: '#94a3b8', colorBg: '#141920',
-    desc: 'A sequencing flowcell/run. Produces files.',
-    fields: [
-      { name: 'flowcell_id', type: 'TEXT', pk: true },
-      { name: 'machine', type: 'TEXT' },
-      { name: 'run_date', type: 'DATE' },
-      { name: 'read_length', type: 'TEXT' },
-      { name: 'sequencing_center', type: 'TEXT' },
-    ],
+    label: 'Sequencing runs', color: '#94a3b8', colorBg: '#141920',
+    desc: 'A sequencing flowcell or run.',
+    required: ['flowcell_id', 'machine', 'run_date', 'read_length'],
+    optional: ['sequencing_center'],
+    system:   ['id', 'created_at', 'extra_metadata'],
     relations: ['run_experiments', 'files'],
   },
   files: {
-    label: 'Files',
-    color: '#94a3b8', colorBg: '#141920',
+    label: 'Files', color: '#94a3b8', colorBg: '#141920',
     desc: 'Physical outputs — FASTQ, BAM, MEX, count matrices. Stored in GCS.',
-    fields: [
-      { name: 'file_id', type: 'TEXT', pk: true },
-      { name: 'run_id', type: 'TEXT', fk: 'sequencing_runs' },
-      { name: 'gcs_uri', type: 'TEXT' },
-      { name: 'file_type', type: 'TEXT' },
-      { name: 'file_format', type: 'TEXT' },
-      { name: 'checksum', type: 'TEXT' },
-      { name: 'size', type: 'BIGINT' },
-    ],
+    required: ['sample_name', 'assay_type', 'library_prep_date', 'flowcell_id', 'gcs_uri', 'file_type', 'file_format', 'checksum_md5'],
+    optional: ['lane', 'gcs_bucket', 'file_path', 'size_bytes'],
+    system:   ['id', 'run_experiment_id', 'experiment_id', 'created_at', 'updated_at', 'extra_metadata'],
     relations: ['sequencing_runs'],
   },
 };
 
-// ── Layout positions ──────────────────────────────────────────────────────────
-const NODE_W = 148, NODE_H = 44;
+// ── Layout ────────────────────────────────────────────────────────────────────
+const NW = 152, NH = 44;
 
-const POSITIONS = {
-  projects:        { x: 60,  y: 60  },
-  subjects:        { x: 320, y: 60  },
-  samples:         { x: 190, y: 185 },
-  cohorts:         { x: 490, y: 185 },
-  cohort_members:  { x: 370, y: 305 },
-  experiments:     { x: 190, y: 340 },
-  pools:           { x: 490, y: 340 },
-  pool_members:    { x: 370, y: 460 },
-  run_experiments: { x: 190, y: 500 },
-  sequencing_runs: { x: 60,  y: 620 },
-  files:           { x: 320, y: 620 },
+const POS = {
+  projects:        { x: 40,  y: 60  },
+  subjects:        { x: 330, y: 60  },
+  samples:         { x: 185, y: 185 },
+  sample_sources:  { x: 330, y: 305 },
+  cohorts:         { x: 510, y: 185 },
+  cohort_members:  { x: 510, y: 305 },
+  experiments:     { x: 185, y: 360 },
+  pools:           { x: 510, y: 425 },
+  pool_members:    { x: 370, y: 480 },
+  run_experiments: { x: 185, y: 490 },
+  sequencing_runs: { x: 40,  y: 610 },
+  files:           { x: 330, y: 610 },
 };
 
-// Edges: [from, to]
 const EDGES = [
-  ['projects', 'samples'],
-  ['subjects', 'samples'],
-  ['samples', 'experiments'],
-  ['samples', 'cohort_members'],
-  ['cohorts', 'cohort_members'],
-  ['experiments', 'pool_members'],
-  ['pools', 'pool_members'],
-  ['experiments', 'run_experiments'],
-  ['sequencing_runs', 'run_experiments'],
-  ['sequencing_runs', 'files'],
+  ['projects',       'samples'],
+  ['subjects',       'sample_sources'],
+  ['samples',        'sample_sources'],
+  ['samples',        'experiments'],
+  ['samples',        'cohort_members'],
+  ['cohorts',        'cohort_members'],
+  ['experiments',    'pool_members'],
+  ['pools',          'pool_members'],
+  ['experiments',    'run_experiments'],
+  ['sequencing_runs','run_experiments'],
+  ['sequencing_runs','files'],
 ];
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// ── Build SVG ─────────────────────────────────────────────────────────────────
 const svg = document.getElementById('canvas');
-const W = 680, H = 720;
-svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+const VW = 700, VH = 720;
+svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
 svg.style.width = '100%';
 svg.style.height = '100%';
 
@@ -495,31 +466,30 @@ defs.innerHTML = `
   </marker>
   <marker id="arr-hi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
     <path d="M2 1L8 5L2 9" fill="none" stroke="#4f9cf9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </marker>
-`;
+  </marker>`;
 svg.appendChild(defs);
 
 // group labels
-function groupLabel(txt, x, y) {
+function addGroupLabel(txt, x, y) {
   const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   t.setAttribute('x', x); t.setAttribute('y', y);
   t.setAttribute('class', 'group-label');
   t.textContent = txt;
   svg.appendChild(t);
 }
-groupLabel('Lineage', 20, 52);
-groupLabel('Grouping', 480, 52);
-groupLabel('Sequencing', 20, 610);
+addGroupLabel('Lineage',    30,  50);
+addGroupLabel('Grouping',  500,  50);
+addGroupLabel('Sequencing', 30, 600);
 
-// edges layer
+// edges
 const edgeLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 edgeLayer.id = 'edge-layer';
 svg.appendChild(edgeLayer);
 
-function edgePath(fromKey, toKey) {
-  const f = POSITIONS[fromKey], t = POSITIONS[toKey];
-  const fx = f.x + NODE_W / 2, fy = f.y + NODE_H;
-  const tx = t.x + NODE_W / 2, ty = t.y;
+function edgePath(fk, tk) {
+  const f = POS[fk], t = POS[tk];
+  const fx = f.x + NW / 2, fy = f.y + NH;
+  const tx = t.x + NW / 2, ty = t.y;
   const my = (fy + ty) / 2;
   return `M ${fx} ${fy} C ${fx} ${my}, ${tx} ${my}, ${tx} ${ty}`;
 }
@@ -538,20 +508,19 @@ EDGES.forEach(([from, to]) => {
 
 // nodes
 const nodeEls = {};
-Object.entries(POSITIONS).forEach(([key, pos]) => {
+Object.entries(POS).forEach(([key, pos]) => {
   const t = TABLES[key];
+  const isJunction = !!t.junction;
+
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.setAttribute('class', 'erd-node');
   g.dataset.key = key;
 
-  const isJunction = key === 'cohort_members' || key === 'pool_members' || key === 'run_experiments';
-
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttribute('class', 'node-bg');
   rect.setAttribute('x', pos.x);
   rect.setAttribute('y', pos.y);
-  rect.setAttribute('width', NODE_W);
-  rect.setAttribute('height', NODE_H);
+  rect.setAttribute('width', NW);
+  rect.setAttribute('height', NH);
   rect.setAttribute('rx', 6);
   rect.setAttribute('fill', t.colorBg);
   rect.setAttribute('stroke', t.color);
@@ -559,25 +528,29 @@ Object.entries(POSITIONS).forEach(([key, pos]) => {
   rect.setAttribute('stroke-opacity', isJunction ? '0.4' : '0.7');
 
   const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  label.setAttribute('x', pos.x + NODE_W / 2);
-  label.setAttribute('y', pos.y + NODE_H / 2 - 6);
+  label.setAttribute('x', pos.x + NW / 2);
+  label.setAttribute('y', pos.y + NH / 2 - 6);
   label.setAttribute('text-anchor', 'middle');
   label.setAttribute('dominant-baseline', 'central');
   label.setAttribute('fill', t.color);
-  label.setAttribute('font-family', "'JetBrains Mono', 'Fira Code', monospace");
+  label.setAttribute('font-family', 'JetBrains Mono, Fira Code, monospace');
   label.setAttribute('font-size', '11');
   label.setAttribute('font-weight', isJunction ? '400' : '600');
   label.textContent = t.label;
 
+  // subtitle: required field count indicator
+  const reqCount = t.required.length;
   const sub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  sub.setAttribute('x', pos.x + NODE_W / 2);
-  sub.setAttribute('y', pos.y + NODE_H / 2 + 8);
+  sub.setAttribute('x', pos.x + NW / 2);
+  sub.setAttribute('y', pos.y + NH / 2 + 8);
   sub.setAttribute('text-anchor', 'middle');
   sub.setAttribute('dominant-baseline', 'central');
-  sub.setAttribute('fill', 'rgba(255,255,255,0.3)');
-  sub.setAttribute('font-family', "'JetBrains Mono', 'Fira Code', monospace");
+  sub.setAttribute('fill', 'rgba(255,255,255,0.28)');
+  sub.setAttribute('font-family', 'JetBrains Mono, Fira Code, monospace');
   sub.setAttribute('font-size', '9');
-  sub.textContent = t.fields.filter(f => f.pk).map(f => f.name).join(', ') || '(junction)';
+  sub.textContent = isJunction
+    ? '(junction)'
+    : `${reqCount} required · ${t.optional.length} optional`;
 
   g.appendChild(rect);
   g.appendChild(label);
@@ -588,27 +561,22 @@ Object.entries(POSITIONS).forEach(([key, pos]) => {
 });
 
 // ── Selection ─────────────────────────────────────────────────────────────────
-let activeKey = null;
-
 function selectTable(key) {
-  // reset all
+  // reset all nodes
   Object.entries(nodeEls).forEach(([k, { rect }]) => {
-    const t = TABLES[k];
-    const isJunction = k === 'cohort_members' || k === 'pool_members' || k === 'run_experiments';
-    rect.setAttribute('stroke-opacity', isJunction ? '0.4' : '0.7');
-    rect.setAttribute('stroke-width', isJunction ? '1' : '1.5');
+    const isJ = !!TABLES[k].junction;
+    rect.setAttribute('stroke-opacity', isJ ? '0.4' : '0.7');
+    rect.setAttribute('stroke-width',   isJ ? '1'   : '1.5');
   });
+  // reset all edges
   Object.values(edgeEls).forEach(p => {
     p.setAttribute('class', 'conn-line');
     p.setAttribute('marker-end', 'url(#arr)');
   });
 
-  activeKey = key;
-  const t = TABLES[key];
-
   // highlight selected node
   nodeEls[key].rect.setAttribute('stroke-opacity', '1');
-  nodeEls[key].rect.setAttribute('stroke-width', '2');
+  nodeEls[key].rect.setAttribute('stroke-width', '2.5');
 
   // highlight connected edges
   EDGES.forEach(([from, to]) => {
@@ -621,39 +589,70 @@ function selectTable(key) {
     }
   });
 
+  const t = TABLES[key];
+
   // sidebar title
   document.getElementById('sidebar-title').textContent = t.label;
 
   // ingest button
   const btn = document.getElementById('ingest-btn');
-  btn.href = `${STREAMLIT_BASE}?table=${key}`;
+  btn.href = `${STREAMLIT_BASE}/Ingest_Data?table=${key}`;
   btn.classList.add('visible');
 
   // sidebar body
-  const body = document.getElementById('sidebar-body');
-  const isJunction = key === 'cohort_members' || key === 'pool_members' || key === 'run_experiments';
-
   let html = `<div class="table-name" style="color:${t.color}">${t.label}</div>`;
   html += `<div class="table-desc">${t.desc}</div>`;
 
-  if (isJunction) {
-    html += `<div style="padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:4px;border-left:2px solid rgba(255,255,255,0.15);margin-bottom:12px;color:var(--text-muted);font-size:11px;line-height:1.5">
-      Junction table — no surrogate ID. Primary key is the composite of both foreign keys.
-    </div>`;
+  if (t.junction) {
+    html += `<div class="junction-note">Junction table — no surrogate ID. Primary key is the composite of both foreign keys. No extra_metadata.</div>`;
   }
 
-  html += `<div class="fields-label">Fields</div>`;
-  t.fields.forEach(f => {
-    html += `<div class="field-row">
-      <span class="field-name">${f.name}</span>
-      <span class="field-type">${f.type}</span>
-      ${f.pk ? '<span class="badge badge-pk">PK</span>' : ''}
-      ${f.fk ? `<span class="badge badge-fk">→ ${f.fk}</span>` : ''}
-    </div>`;
-  });
+  // required fields
+  if (t.required.length) {
+    html += `<div class="section-label"><span class="req-dot"></span>Required fields</div>`;
+    t.required.forEach(f => {
+      html += `<div class="field-row">
+        <span class="field-name">${f}</span>
+        <span class="field-type">ingest key</span>
+      </div>`;
+    });
+  }
 
+  // optional fields
+  if (t.optional.length) {
+    html += `<div class="section-label"><span class="opt-dot"></span>Optional fields</div>`;
+    t.optional.forEach(f => {
+      html += `<div class="field-row">
+        <span class="field-name">${f}</span>
+        <span class="field-type">optional</span>
+      </div>`;
+    });
+  }
+
+  // system / internal fields
+  if (t.system.length) {
+    html += `<div class="section-label" style="margin-top:10px">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--text-dim);display:inline-block;flex-shrink:0"></span>
+      System fields
+    </div>`;
+    t.system.forEach(f => {
+      const isPk = f === 'id';
+      const isFk = f.endsWith('_id') && f !== 'id';
+      html += `<div class="field-row">
+        <span class="field-name">${f}</span>
+        ${isPk ? '<span class="badge badge-pk">PK</span>' : ''}
+        ${isFk ? '<span class="badge badge-fk">FK</span>' : ''}
+        <span class="badge badge-sys">auto</span>
+      </div>`;
+    });
+  }
+
+  // related tables
   if (t.relations && t.relations.length) {
-    html += `<div class="relations-label">Related tables</div>`;
+    html += `<div class="section-label" style="margin-top:14px">
+      <span style="color:var(--accent);font-size:10px">↔</span>
+      Related tables
+    </div>`;
     t.relations.forEach(rel => {
       const rt = TABLES[rel];
       html += `<div class="rel-row" onclick="selectTable('${rel}')">
@@ -663,10 +662,9 @@ function selectTable(key) {
     });
   }
 
-  body.innerHTML = html;
+  document.getElementById('sidebar-body').innerHTML = html;
 }
 
-// expose selectTable to inline onclick handlers
 window.selectTable = selectTable;
 </script>
 </body>
