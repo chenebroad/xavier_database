@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 import pandas as pd
 from api_client import query_data, run_quick_query, update_row
@@ -58,7 +59,7 @@ QUICK_QUERIES = {
 # SESSION STATE
 # =====================================================
 
-for key in ["query_results", "edited_df", "original_df", "pending_changes"]:
+for key in ["query_results", "original_df", "pending_changes"]:
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -66,33 +67,90 @@ for key in ["query_results", "edited_df", "original_df", "pending_changes"]:
 # HELPERS
 # =====================================================
 
-def normalize(row: dict) -> dict:
-    return {k: (None if v == "" else v) for k, v in row.items()}
+def normalize_value(v):
+    """
+    Normalize a value for comparison.
+    Handles dict/string inconsistencies that arise when
+    JSONB columns are serialized differently by pandas vs the API.
+    """
+    if v is None or v == "":
+        return None
+    if isinstance(v, dict):
+        return json.dumps(v, sort_keys=True)
+    if isinstance(v, str):
+        stripped = v.strip()
+        # Attempt to parse stringified dicts/JSON for consistent comparison
+        try:
+            parsed = json.loads(stripped.replace("'", '"'))
+            return json.dumps(parsed, sort_keys=True)
+        except Exception:
+            return stripped
+    return v
 
 
-def compute_changes(original_df: pd.DataFrame, edited_df: pd.DataFrame) -> list[dict]:
-    """Return a list of field-level diffs between original and edited dataframes."""
-    changes = []
-    for i in range(len(edited_df)):
-        original = normalize(original_df.iloc[i].to_dict())
-        edited   = normalize(edited_df.iloc[i].to_dict())
-        for k in edited:
-            if k in ["id", "created_at", "updated_at", "added_at"]:
+def compute_changes_from_editor(editor_key: str, original_df: pd.DataFrame) -> list[dict]:
+    """
+    Read changes directly from data_editor's built-in state.
+    data_editor stores only actually-edited rows under
+    st.session_state[editor_key]["edited_rows"] as:
+        { "row_index": { "field": new_value, ... }, ... }
+    This avoids full-dataframe diffing and eliminates false positives.
+    """
+    editor_state = st.session_state.get(editor_key)
+    if not editor_state:
+        return []
+
+    raw_edits = editor_state.get("edited_rows", {})
+    changes   = []
+
+    for row_idx_str, field_changes in raw_edits.items():
+        row_idx     = int(row_idx_str)
+        original_row = original_df.iloc[row_idx].to_dict()
+
+        for field, new_val in field_changes.items():
+            if field in ["id", "created_at", "updated_at", "added_at"]:
                 continue
-            if original.get(k) != edited.get(k):
+            orig_val = original_row.get(field)
+            if normalize_value(orig_val) != normalize_value(new_val):
+                changes.append({
+                    "row":   row_idx,
+                    "field": field,
+                    "from":  orig_val,
+                    "to":    new_val,
+                    "id":    original_row.get("id"),
+                })
+
+    return changes
+
+
+def compute_changes_from_csv(original_df: pd.DataFrame, uploaded_df: pd.DataFrame) -> list[dict]:
+    """
+    Diff for the CSV upload path — compares full dataframes
+    but uses normalize_value to avoid JSONB false positives.
+    """
+    changes = []
+    for i in range(min(len(original_df), len(uploaded_df))):
+        original_row = original_df.iloc[i].to_dict()
+        edited_row   = uploaded_df.iloc[i].to_dict()
+        for field in edited_row:
+            if field in ["id", "created_at", "updated_at", "added_at"]:
+                continue
+            if normalize_value(original_row.get(field)) != normalize_value(edited_row.get(field)):
                 changes.append({
                     "row":   i,
-                    "field": k,
-                    "from":  original.get(k),
-                    "to":    edited.get(k),
-                    "id":    original.get("id"),
+                    "field": field,
+                    "from":  original_row.get(field),
+                    "to":    edited_row.get(field),
+                    "id":    original_row.get("id"),
                 })
     return changes
 
 
 def apply_changes(changes: list[dict], table: str) -> tuple[int, list[dict]]:
-    """Fire PATCH for each changed row. Returns (success_count, errors)."""
-    # Group changes by row id
+    """
+    Group field-level changes by row ID then fire one PATCH per row.
+    Returns (success_count, errors).
+    """
     rows_to_patch: dict[str, dict] = {}
     for change in changes:
         row_id = change["id"]
@@ -108,6 +166,16 @@ def apply_changes(changes: list[dict], table: str) -> tuple[int, list[dict]]:
         except Exception as e:
             errors.append({"id": row_id, "error": str(e)})
     return success, errors
+
+
+def show_pending_changes(changes: list[dict]) -> None:
+    """Render the change preview table."""
+    change_df = pd.DataFrame(changes)[["row", "field", "from", "to"]]
+    st.dataframe(change_df, use_container_width=True, hide_index=True)
+    st.caption(
+        f"{len(set(c['id'] for c in changes))} row(s) · "
+        f"{len(changes)} field change(s) pending"
+    )
 
 
 # =====================================================
@@ -138,13 +206,12 @@ with tab1:
 
             if not data:
                 st.warning("No data found")
-                for k in ["query_results", "edited_df", "original_df", "pending_changes"]:
+                for k in ["query_results", "original_df", "pending_changes"]:
                     st.session_state[k] = None
             else:
                 df = pd.DataFrame(data)
-                st.session_state.query_results  = df
-                st.session_state.edited_df      = df.copy()
-                st.session_state.original_df    = df.copy()
+                st.session_state.query_results   = df
+                st.session_state.original_df     = df.copy()
                 st.session_state.pending_changes = None
 
         except Exception as e:
@@ -183,7 +250,7 @@ with tab1:
 
         # Metrics
         m1, m2 = st.columns(2)
-        m1.metric("Rows returned",    len(df))
+        m1.metric("Rows returned",     len(df))
         m2.metric("Columns displayed", len(df.columns))
 
         # Download
@@ -214,24 +281,38 @@ with tab1:
                     horizontal=True
                 )
 
+                st.divider()
+
                 # ── Inline editor ─────────────────────────────────────────────
 
                 if edit_method == "Edit inline":
 
-                    # Key tied to table + result size so editor only remounts
-                    # when new data is fetched, not on every widget interaction
-                    editor_key = f"editor_{selected_table}_{len(st.session_state.original_df)}"
+                    # Key is stable for the lifetime of this query result.
+                    # Using id() of the dataframe object means the key only
+                    # changes when a new query is run and original_df is replaced,
+                    # not on every widget rerun — this prevents the editor resetting.
+                    editor_key = f"editor_{selected_table}_{id(st.session_state.original_df)}"
 
-                    edited_df = st.data_editor(
-                        st.session_state.edited_df,
+                    # Always pass original_df as the base — never feed edited
+                    # state back in, as that causes the reset loop.
+                    # data_editor manages its own diff state internally via editor_key.
+                    st.data_editor(
+                        st.session_state.original_df,
                         use_container_width=True,
                         num_rows="fixed",
                         key=editor_key,
                     )
 
-                    # Persist edits without triggering a full rerun
-                    if not edited_df.equals(st.session_state.edited_df):
-                        st.session_state.edited_df = edited_df
+                    if st.button("Preview changes"):
+                        changes = compute_changes_from_editor(
+                            editor_key,
+                            st.session_state.original_df
+                        )
+                        if not changes:
+                            st.info("No changes detected")
+                            st.session_state.pending_changes = None
+                        else:
+                            st.session_state.pending_changes = changes
 
                 # ── CSV upload ────────────────────────────────────────────────
 
@@ -243,52 +324,54 @@ with tab1:
                             uploaded_df = pd.read_csv(uploaded_file)
                             st.write("Preview:")
                             st.dataframe(uploaded_df, use_container_width=True)
-                            st.session_state.edited_df = uploaded_df
+
+                            if st.button("Preview changes"):
+                                changes = compute_changes_from_csv(
+                                    st.session_state.original_df,
+                                    uploaded_df
+                                )
+                                if not changes:
+                                    st.info("No changes detected")
+                                    st.session_state.pending_changes = None
+                                else:
+                                    st.session_state.pending_changes = changes
+
                         except Exception as e:
                             st.error(f"Failed to read CSV: {e}")
 
-                st.divider()
-
-                # ── Preview changes ───────────────────────────────────────────
-
-                if st.button("Preview changes"):
-                    changes = compute_changes(
-                        st.session_state.original_df,
-                        st.session_state.edited_df
-                    )
-                    if not changes:
-                        st.info("No changes detected")
-                        st.session_state.pending_changes = None
-                    else:
-                        st.session_state.pending_changes = changes
-                        change_df = pd.DataFrame(changes)[["row", "field", "from", "to"]]
-                        st.dataframe(change_df, use_container_width=True, hide_index=True)
-                        st.caption(f"{len(set(c['id'] for c in changes))} row(s) will be updated")
-
-                # ── Confirm and apply ─────────────────────────────────────────
+                # ── Pending changes preview ───────────────────────────────────
 
                 if st.session_state.pending_changes:
-                    if st.button("✅ Confirm and apply changes", type="primary"):
-                        success, errors = apply_changes(
-                            st.session_state.pending_changes,
-                            selected_table
-                        )
+                    st.subheader("Pending changes")
+                    show_pending_changes(st.session_state.pending_changes)
 
-                        if errors:
-                            st.error(f"{len(errors)} row(s) failed:")
-                            st.json(errors)
+                    col_confirm, col_discard = st.columns([1, 4])
 
-                        if success:
-                            st.success(f"{success} row(s) updated successfully")
+                    with col_confirm:
+                        if st.button("✅ Confirm and apply", type="primary"):
+                            success, errors = apply_changes(
+                                st.session_state.pending_changes,
+                                selected_table
+                            )
+                            if errors:
+                                st.error(f"{len(errors)} row(s) failed:")
+                                st.json(errors)
+                            if success:
+                                st.success(f"{success} row(s) updated successfully")
 
-                        # Refresh state
-                        refreshed = query_data(selected_table, limit)
-                        if refreshed:
-                            fresh_df = pd.DataFrame(refreshed)
-                            st.session_state.query_results  = fresh_df
-                            st.session_state.edited_df      = fresh_df.copy()
-                            st.session_state.original_df    = fresh_df.copy()
-                        st.session_state.pending_changes = None
+                            # Refresh — fetches latest state and resets editor
+                            refreshed = query_data(selected_table, limit)
+                            if refreshed:
+                                fresh_df = pd.DataFrame(refreshed)
+                                st.session_state.query_results   = fresh_df
+                                st.session_state.original_df     = fresh_df.copy()
+                            st.session_state.pending_changes = None
+                            st.rerun()
+
+                    with col_discard:
+                        if st.button("✖ Discard changes"):
+                            st.session_state.pending_changes = None
+                            st.rerun()
 
         # ── View mode ─────────────────────────────────────────────────────────
 
