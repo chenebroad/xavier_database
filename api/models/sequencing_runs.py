@@ -8,6 +8,7 @@ class SequencingCreate(BaseModel):
     run_date: Optional[str] = None
     read_length: Optional[str] = None
     sequencing_center: Optional[str] = None
+    bcl_gcs_uri: Optional[str] = None
     extra_metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
     @model_validator(mode="before")

@@ -17,7 +17,7 @@ CREATE SEQUENCE IF NOT EXISTS sample_seq   START 1;
 CREATE SEQUENCE IF NOT EXISTS subject_seq  START 1;
 CREATE SEQUENCE IF NOT EXISTS experiment_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS run_seq      START 1;
-CREATE SEQUENCE IF NOT EXISTS run_exp_seq  START 1;
+CREATE SEQUENCE IF NOT EXISTS fl_lib_seq   START 1;
 CREATE SEQUENCE IF NOT EXISTS files_seq    START 1;
 CREATE SEQUENCE IF NOT EXISTS cohort_seq   START 1;
 CREATE SEQUENCE IF NOT EXISTS pool_seq     START 1;
@@ -157,19 +157,21 @@ CREATE TABLE sequencing_runs (
     run_date          DATE,
     read_length       TEXT,
     sequencing_center TEXT,
+    bcl_gcs_uri       TEXT,
     extra_metadata    JSONB DEFAULT '{}'::jsonb,
     created_at        TIMESTAMP DEFAULT now(),
     updated_at        TIMESTAMP DEFAULT now()
 );
 
 -- ==============================
--- Run Experiments
--- Links experiments to sequencing runs (with lane/index metadata)
+-- Flowcell Libraries
+-- Pre-sequencing manifest: which library is on which flowcell, lane, and index.
+-- Parent record for all raw FASTQ files produced by demultiplexing.
 -- ==============================
-CREATE TABLE run_experiments (
+CREATE TABLE flowcell_libraries (
     id             TEXT PRIMARY KEY
-                       DEFAULT ('XER' || LPAD(nextval('run_exp_seq')::TEXT, 5, '0')),
-    experiment_id  TEXT NOT NULL REFERENCES experiments(id)    ON DELETE CASCADE,
+                       DEFAULT ('XER' || LPAD(nextval('fl_lib_seq')::TEXT, 5, '0')),
+    experiment_id  TEXT NOT NULL REFERENCES experiments(id)     ON DELETE CASCADE,
     run_id         TEXT NOT NULL REFERENCES sequencing_runs(id) ON DELETE CASCADE,
     lane           TEXT,
     index_sequence TEXT,
@@ -181,36 +183,29 @@ CREATE TABLE run_experiments (
 
 -- ==============================
 -- Files
+-- Raw sequencing output files (FASTQs) produced by demultiplexing.
+-- Each file belongs to exactly one flowcell_library record.
 -- ==============================
 CREATE TABLE files (
-    id                TEXT PRIMARY KEY
-                          DEFAULT ('XF' || LPAD(nextval('files_seq')::TEXT, 5, '0')),
+    id                   TEXT PRIMARY KEY
+                             DEFAULT ('XF' || LPAD(nextval('files_seq')::TEXT, 5, '0')),
 
-    -- Storage location — at least one must be set (enforced below)
-    gcs_uri      TEXT UNIQUE,
-    gcs_bucket   TEXT,
-    file_path    TEXT,
-
-    file_type    TEXT NOT NULL,   -- 'fastq', 'vcf', 'counts', 'qc_html', 'qc_json'
-    file_format  TEXT,            -- 'fastq.gz', 'vcf.gz', 'tsv', 'html'
-    size_bytes   BIGINT,
-    checksum_md5 TEXT,
-
-    -- Parent link — exactly one must be set (enforced below)
-    run_experiment_id TEXT REFERENCES run_experiments(id) ON DELETE CASCADE,
-    experiment_id     TEXT REFERENCES experiments(id)     ON DELETE CASCADE,
+    flowcell_library_id  TEXT NOT NULL REFERENCES flowcell_libraries(id) ON DELETE CASCADE,
 
     -- Populated post-demultiplexing for pooled samples
-    subject_id TEXT REFERENCES subjects(id),
+    subject_id           TEXT REFERENCES subjects(id),
 
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at     TIMESTAMP DEFAULT now(),
-    updated_at     TIMESTAMP DEFAULT now(),
+    -- Storage location — at least one must be set (enforced below)
+    gcs_uri              TEXT UNIQUE,
+    gcs_bucket           TEXT,
+    file_path            TEXT,
 
-    CONSTRAINT files_single_parent CHECK (
-        (run_experiment_id IS NOT NULL)::int +
-        (experiment_id     IS NOT NULL)::int = 1
-    ),
+    file_type            TEXT NOT NULL,   -- 'fastq', 'bam', etc.
+    file_format          TEXT,            -- 'fastq.gz', 'bam', etc.
+
+    extra_metadata       JSONB DEFAULT '{}'::jsonb,
+    created_at           TIMESTAMP DEFAULT now(),
+    updated_at           TIMESTAMP DEFAULT now(),
 
     CONSTRAINT files_storage_location CHECK (
         gcs_uri IS NOT NULL OR file_path IS NOT NULL
@@ -225,10 +220,9 @@ CREATE INDEX idx_samples_metadata_gin ON samples  USING GIN (extra_metadata);
 CREATE INDEX idx_experiments_metadata ON experiments USING GIN (extra_metadata);
 CREATE INDEX idx_runs_flowcell        ON sequencing_runs(flowcell_id);
 CREATE INDEX idx_runs_metadata_gin    ON sequencing_runs USING GIN (extra_metadata);
-CREATE INDEX idx_files_run_experiment ON files(run_experiment_id);
-CREATE INDEX idx_files_experiment     ON files(experiment_id);
-CREATE INDEX idx_files_subject        ON files(subject_id);
-CREATE INDEX idx_files_metadata_gin   ON files USING GIN (extra_metadata);
+CREATE INDEX idx_files_flowcell_library ON files(flowcell_library_id);
+CREATE INDEX idx_files_subject          ON files(subject_id);
+CREATE INDEX idx_files_metadata_gin     ON files USING GIN (extra_metadata);
 CREATE INDEX idx_projects_name        ON projects(project_name);
 
 -- ==============================

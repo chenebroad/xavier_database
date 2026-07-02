@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from models.sequencingrun import SequencingCreate
+from models.sequencing_runs import SequencingCreate
 import psycopg2.extras
 import json
 
@@ -24,14 +24,14 @@ def get_sequencing(cur= Depends(get_db)):
 @router.post("/sequencing")
 def add_sequencing(sequencing: SequencingCreate, cur = Depends(get_db)):
     cur.execute("""
-       INSERT INTO sequencing_runs (
-            flowcell_id, machine, run_date, read_length, sequencing_center, extra_metadata
+        INSERT INTO sequencing_runs (
+            flowcell_id, machine, run_date, read_length, sequencing_center, bcl_gcs_uri, extra_metadata
         )
-        VALUES (%s, %s, %s, %s, %s, %s)
-        RETURNING id         
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        RETURNING id
     """, (
-        sequencing.flowcell_id, sequencing.machine, sequencing.run_date, sequencing. read_length,
-        sequencing.sequencing_center, psycopg2.extras.Json(sequencing.extra_metadata)
+        sequencing.flowcell_id, sequencing.machine, sequencing.run_date, sequencing.read_length,
+        sequencing.sequencing_center, sequencing.bcl_gcs_uri, psycopg2.extras.Json(sequencing.extra_metadata)
     ))
     
     sequencing_id = cur.fetchone()["id"]

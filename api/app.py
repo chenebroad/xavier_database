@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from endpoints import (samples, projects, experiments, 
+from endpoints import (samples, projects, experiments,
 cohorts, cohort_members, pools, pool_members,
-subjects, sample_source, sequencingrun, 
-seqexpjunc, files, query, quick_query, dashboard)
+subjects, sample_source, sequencing_runs,
+flowcell_libraries, files, query, quick_query, dashboard)
 
 app = FastAPI(title="Xavier Database API")
 
@@ -17,8 +17,8 @@ app.include_router(cohort_members.router)
 app.include_router(experiments.router)
 app.include_router(pools.router)
 app.include_router(pool_members.router)
-app.include_router(sequencingrun.router)
-app.include_router(seqexpjunc.router)
+app.include_router(sequencing_runs.router)
+app.include_router(flowcell_libraries.router)
 app.include_router(files.router)
 
 # SUPPLEMENTARY ROUTERS for QUERY
