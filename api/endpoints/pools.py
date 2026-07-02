@@ -57,3 +57,21 @@ def update_pool(pool_id: str, payload: dict, cur=Depends(get_db)):
     if not result:
         raise HTTPException(404, f"Pool '{pool_id}' not found")
     return result
+
+## DELETE pools
+@router.delete("/pools/{pool_id}")
+def delete_pool(pool_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM pools
+            WHERE id = %s
+            RETURNING *
+        """, (pool_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Pool not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

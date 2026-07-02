@@ -131,3 +131,21 @@ def update_seqexp(run_experiment_id: str, payload: dict, cur = Depends(get_db)):
         raise HTTPException(404, "Run-Experiment mapping not found")
 
     return result
+
+## DELETE seqexp
+@router.delete("/seqexp/{run_experiment_id}")
+def delete_seqexp(run_experiment_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM run_experiments
+            WHERE id = %s
+            RETURNING *
+        """, (run_experiment_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Run-experiment mapping not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

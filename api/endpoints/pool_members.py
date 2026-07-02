@@ -21,7 +21,7 @@ def get_pool_members(cur=Depends(get_db)):
         JOIN pools p       ON pm.pool_id = p.id
         JOIN experiments e ON pm.experiment_id = e.id
         JOIN samples s     ON e.sample_id = s.id
-        ORDER BY pm.created_at DESC
+        ORDER BY pm.added_at DESC
     """)
     return cur.fetchall()
 

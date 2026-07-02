@@ -51,12 +51,32 @@ def update_cohort(cohort_id: str, payload: dict, cur = Depends(get_db)):
 @router.post("/cohorts")
 def add_cohort(cohort: CohortCreate, cur = Depends(get_db)):
     cur.execute("""
-        INSERT INTO cohorts (cohort_name, extra_metadata)
+        INSERT INTO cohorts (cohort_name, cohort_type, description, extra_metadata)
         VALUES (%s, %s, %s, %s)
         RETURNING *
     """, (
         cohort.cohort_name,
+        cohort.cohort_type,
+        cohort.description,
         psycopg2.extras.Json(cohort.extra_metadata or {})
     ))
 
     return cur.fetchone()
+
+## DELETE cohorts
+@router.delete("/cohorts/{cohort_id}")
+def delete_cohort(cohort_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM cohorts
+            WHERE id = %s
+            RETURNING *
+        """, (cohort_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Cohort not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

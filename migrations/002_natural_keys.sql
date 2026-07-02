@@ -1,333 +1,243 @@
 -- ==============================
--- LIMS BASE SCHEMA v1
--- Human-readable IDs (XP, XS, XE)
+-- XAVIER LIMS SCHEMA v2
+-- Natural human-readable IDs (XP, XS, XE, ...)
 -- JSONB flexible metadata
--- Metadata registry + audit tables
 -- ==============================
 
 -- ------------------------------
--- Enable pgcrypto for sequences
+-- Extensions
 -- ------------------------------
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- ------------------------------
 -- Sequences for human-readable IDs
 -- ------------------------------
-CREATE SEQUENCE project_seq START 1;
-CREATE SEQUENCE sample_seq START 1;
-CREATE SEQUENCE subject_seq START 1;
-CREATE SEQUENCE experiment_seq START 1;
-CREATE SEQUENCE run_seq START 1;
-CREATE SEQUENCE run_exp_seq START 1;
-CREATE SEQUENCE files_seq START 1;
-CREATE SEQUENCE cohort_seq START 1;
-CREATE SEQUENCE pool_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS project_seq  START 1;
+CREATE SEQUENCE IF NOT EXISTS sample_seq   START 1;
+CREATE SEQUENCE IF NOT EXISTS subject_seq  START 1;
+CREATE SEQUENCE IF NOT EXISTS experiment_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS run_seq      START 1;
+CREATE SEQUENCE IF NOT EXISTS run_exp_seq  START 1;
+CREATE SEQUENCE IF NOT EXISTS files_seq    START 1;
+CREATE SEQUENCE IF NOT EXISTS cohort_seq   START 1;
+CREATE SEQUENCE IF NOT EXISTS pool_seq     START 1;
 
 -- ==============================
--- Projects Table
+-- Projects
 -- ==============================
 CREATE TABLE projects (
-    id TEXT PRIMARY KEY DEFAULT ('XP' || LPAD(nextval('project_seq')::TEXT, 5, '0')),
+    id           TEXT PRIMARY KEY
+                     DEFAULT ('XP' || LPAD(nextval('project_seq')::TEXT, 5, '0')),
     project_name TEXT NOT NULL UNIQUE,
-    description TEXT,
-	extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
-);
-
--- ==============================
--- Samples Table
--- ==============================
-CREATE TABLE samples (
-    id TEXT PRIMARY KEY 
-        DEFAULT ('XS' || LPAD(nextval('sample_seq')::TEXT, 5, '0')),
-
-    project_id TEXT NOT NULL
-        REFERENCES projects(id) ON DELETE CASCADE,
-
-    sample_name TEXT NOT NULL,
-        REFERENCES subjects(id) ON DELETE CASCADE
-    sample_type TEXT,
-    organism TEXT,
-    tissue TEXT,
-
+    description  TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
-
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
-
+    created_at   TIMESTAMP DEFAULT now(),
+    updated_at   TIMESTAMP DEFAULT now()
 );
 
 -- ==============================
--- Subjects Table
+-- Subjects
+-- (Independent of samples — linked via sample_sources)
 -- ==============================
 CREATE TABLE subjects (
-    id TEXT PRIMARY KEY
-        DEFAULT ('XSU' || LPAD(nextval('subject_seq')::TEXT, 5, '0')),    
-    pub_id TEXT,
-    freezerworks_id TEXT,
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
+    id               TEXT PRIMARY KEY
+                         DEFAULT ('XSU' || LPAD(nextval('subject_seq')::TEXT, 5, '0')),
+    pub_id           TEXT NOT NULL,
+    freezerworks_id  TEXT NOT NULL,
+    extra_metadata   JSONB DEFAULT '{}'::jsonb,
+    added_at         TIMESTAMP DEFAULT now(),
+    UNIQUE (pub_id, freezerworks_id)
 );
 
 -- ==============================
--- Sample sources Table
+-- Samples
 -- ==============================
+CREATE TABLE samples (
+    id           TEXT PRIMARY KEY
+                     DEFAULT ('XS' || LPAD(nextval('sample_seq')::TEXT, 5, '0')),
+    project_id   TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    sample_name  TEXT NOT NULL,
+    sample_type  TEXT DEFAULT 'individual',   -- 'individual' | 'pooled'
+    organism     TEXT,
+    tissue       TEXT,
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at   TIMESTAMP DEFAULT now(),
+    updated_at   TIMESTAMP DEFAULT now(),
+    UNIQUE (project_id, sample_name)
+);
 
+-- ==============================
+-- Sample Sources
+-- Junction: which subjects contributed to which sample
+-- No surrogate ID — composite PK only
+-- ==============================
 CREATE TABLE sample_sources (
-    sample_id  TEXT NOT NULL REFERENCES samples(id) ON DELETE CASCADE,
-    subject_id TEXT NOT NULL REFERENCES subjects(id),
-    added_at   TIMESTAMPTZ DEFAULT now(),
+    sample_id  TEXT NOT NULL REFERENCES samples(id)  ON DELETE CASCADE,
+    subject_id TEXT NOT NULL REFERENCES subjects(id) ON DELETE CASCADE,
+    added_at   TIMESTAMP DEFAULT now(),
     PRIMARY KEY (sample_id, subject_id)
 );
 
 -- ==============================
--- Cohort Table
+-- Cohorts
 -- ==============================
 CREATE TABLE cohorts (
-    id TEXT PRIMARY KEY 
-        DEFAULT ('XC' || LPAD(nextval('cohort_seq')::TEXT, 5, '0')),
-
-    cohort_name TEXT NOT NULL,
+    id           TEXT PRIMARY KEY
+                     DEFAULT ('XC' || LPAD(nextval('cohort_seq')::TEXT, 5, '0')),
+    cohort_name  TEXT NOT NULL UNIQUE,
+    cohort_type  TEXT,   -- 'biological' | 'technical' | 'analysis'
+    description  TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
-
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
-
+    created_at   TIMESTAMP DEFAULT now(),
+    updated_at   TIMESTAMP DEFAULT now()
 );
 
 -- ==============================
--- Cohort Members Table
+-- Cohort Members
+-- Junction: which samples belong to which cohort
+-- No surrogate ID — composite PK only
 -- ==============================
-CREATE TABLE cohorts_members (
-    sample_id TEXT NOT NULL
-        REFERENCES samples(id),
-    cohort_id TEXT NOT NULL
-        REFERENCES cohorts(id),
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now(),
-    PRIMARY KEY (sample_id, cohort_id)
-
+CREATE TABLE cohort_members (
+    cohort_id  TEXT NOT NULL REFERENCES cohorts(id)  ON DELETE CASCADE,
+    sample_id  TEXT NOT NULL REFERENCES samples(id)  ON DELETE CASCADE,
+    added_at   TIMESTAMP DEFAULT now(),
+    PRIMARY KEY (cohort_id, sample_id)
 );
 
 -- ==============================
--- Experiments Table
+-- Experiments
 -- ==============================
-
 CREATE TABLE experiments (
-    id TEXT PRIMARY KEY
-        DEFAULT ('XE' || LPAD(nextval('experiment_seq')::TEXT, 5, '0')),
-
-	sample_id TEXT NOT NULL
-    	REFERENCES samples(id) ON DELETE CASCADE,
-    assay_type TEXT NOT NULL,
-    library_prep_date DATE NOT NULL,
-
-    library_protocol TEXT,
-    library_version TEXT,
-
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT NOW()
+    id                TEXT PRIMARY KEY
+                          DEFAULT ('XE' || LPAD(nextval('experiment_seq')::TEXT, 5, '0')),
+    sample_id         TEXT NOT NULL REFERENCES samples(id) ON DELETE CASCADE,
+    assay_type        TEXT NOT NULL,
+    library_protocol  TEXT,
+    library_version   TEXT,
+    library_prep_date DATE,
+    extra_metadata    JSONB DEFAULT '{}'::jsonb,
+    created_at        TIMESTAMP DEFAULT now(),
+    updated_at        TIMESTAMP DEFAULT now(),
+    UNIQUE (sample_id, assay_type, library_prep_date)
 );
 
 -- ==============================
--- Pools Table
+-- Pools
 -- ==============================
 CREATE TABLE pools (
-    id TEXT PRIMARY KEY 
-        DEFAULT ('XPO' || LPAD(nextval('pool_seq')::TEXT, 5, '0')),
-    pool_name TEXT NOT NULL,
+    id           TEXT PRIMARY KEY
+                     DEFAULT ('XPO' || LPAD(nextval('pool_seq')::TEXT, 5, '0')),
+    pool_name    TEXT NOT NULL UNIQUE,
+    description  TEXT,
     extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
-
+    created_at   TIMESTAMP DEFAULT now(),
+    updated_at   TIMESTAMP DEFAULT now()
 );
 
 -- ==============================
--- Pool Members Table
+-- Pool Members
+-- Junction: which experiments belong to which pool
+-- No surrogate ID — composite PK only
 -- ==============================
-CREATE TABLE pools_members (
-    experiment_id TEXT NOT NULL
-        REFERENCES experiments(id) ON DELETE CASCADE,
-    pool_id TEXT NOT NULL
-        REFERENCES pools(id) ON DELETE CASCADE,
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now(),
-    PRIMARY KEY (experiment_id, pool_id)
-
+CREATE TABLE pool_members (
+    pool_id       TEXT NOT NULL REFERENCES pools(id)       ON DELETE CASCADE,
+    experiment_id TEXT NOT NULL REFERENCES experiments(id) ON DELETE CASCADE,
+    added_at      TIMESTAMP DEFAULT now(),
+    PRIMARY KEY (pool_id, experiment_id)
 );
 
 -- ==============================
 -- Sequencing Runs
 -- ==============================
 CREATE TABLE sequencing_runs (
-    id TEXT PRIMARY KEY
-        DEFAULT ('XR' || LPAD(nextval('run_seq')::TEXT, 5, '0')),
-    
-    flowcell_id TEXT NOT NULL,
-    machine TEXT,
-    run_date DATE,
-    
-    read_length TEXT,
+    id                TEXT PRIMARY KEY
+                          DEFAULT ('XR' || LPAD(nextval('run_seq')::TEXT, 5, '0')),
+    flowcell_id       TEXT NOT NULL UNIQUE,
+    machine           TEXT,
+    run_date          DATE,
+    read_length       TEXT,
     sequencing_center TEXT,
-    extra_metadata JSONB DEFAULT '{}'::jsonb,
-    created_at TIMESTAMP DEFAULT NOW()
+    extra_metadata    JSONB DEFAULT '{}'::jsonb,
+    created_at        TIMESTAMP DEFAULT now(),
+    updated_at        TIMESTAMP DEFAULT now()
 );
 
-ALTER TABLE sequencing_runs
-ADD CONSTRAINT sequencing_runs_flowcell_unique
-UNIQUE (flowcell_id);
-
-CREATE INDEX idx_sequencing_runs_flowcell
-ON sequencing_runs(flowcell_id);
-
 -- ==============================
--- Experiment <-> Run Junction Table
+-- Run Experiments
+-- Links experiments to sequencing runs (with lane/index metadata)
 -- ==============================
-
 CREATE TABLE run_experiments (
-	id TEXT PRIMARY KEY
-		DEFAULT ('XER' || LPAD(nextval('run_exp_seq')::TEXT, 5, '0')),
-	experiment_id TEXT NOT NULL,
-    run_id TEXT NOT NULL,
-    lane TEXT,
+    id             TEXT PRIMARY KEY
+                       DEFAULT ('XER' || LPAD(nextval('run_exp_seq')::TEXT, 5, '0')),
+    experiment_id  TEXT NOT NULL REFERENCES experiments(id)    ON DELETE CASCADE,
+    run_id         TEXT NOT NULL REFERENCES sequencing_runs(id) ON DELETE CASCADE,
+    lane           TEXT,
     index_sequence TEXT,
-	extra_metadata JSONB DEFAULT '{}'::jsonb,
-
-    UNIQUE (experiment_id, run_id, lane),
-
-    FOREIGN KEY (experiment_id)
-        REFERENCES experiments(id)
-        ON DELETE CASCADE,
-
-    FOREIGN KEY (run_id)
-        REFERENCES sequencing_runs(id)
-        ON DELETE CASCADE,
-
-	created_at TIMESTAMP DEFAULT NOW()
+    extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at     TIMESTAMP DEFAULT now(),
+    updated_at     TIMESTAMP DEFAULT now(),
+    UNIQUE (experiment_id, run_id, lane)
 );
 
-
 -- ==============================
--- Files Table (GCS + Terra Integration)
+-- Files
 -- ==============================
 CREATE TABLE files (
-    id TEXT PRIMARY KEY
-        DEFAULT ('XF' || LPAD(nextval('files_seq')::TEXT, 5, '0')),
+    id                TEXT PRIMARY KEY
+                          DEFAULT ('XF' || LPAD(nextval('files_seq')::TEXT, 5, '0')),
 
     -- Storage location — at least one must be set (enforced below)
-    gcs_uri     TEXT UNIQUE,
-    gcs_bucket  TEXT,
-    file_path   TEXT,            -- local or network path
+    gcs_uri      TEXT UNIQUE,
+    gcs_bucket   TEXT,
+    file_path    TEXT,
 
-    file_type   TEXT NOT NULL,   -- 'fastq', 'vcf', 'counts', 'qc_html', 'qc_json'
-    file_format TEXT,            -- 'fastq.gz', 'vcf.gz', 'tsv', 'html'
-
+    file_type    TEXT NOT NULL,   -- 'fastq', 'vcf', 'counts', 'qc_html', 'qc_json'
+    file_format  TEXT,            -- 'fastq.gz', 'vcf.gz', 'tsv', 'html'
     size_bytes   BIGINT,
     checksum_md5 TEXT,
 
+    -- Parent link — exactly one must be set (enforced below)
     run_experiment_id TEXT REFERENCES run_experiments(id) ON DELETE CASCADE,
     experiment_id     TEXT REFERENCES experiments(id)     ON DELETE CASCADE,
 
+    -- Populated post-demultiplexing for pooled samples
+    subject_id TEXT REFERENCES subjects(id),
+
     extra_metadata JSONB DEFAULT '{}'::jsonb,
+    created_at     TIMESTAMP DEFAULT now(),
+    updated_at     TIMESTAMP DEFAULT now(),
 
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-
-    -- Exactly one parent
     CONSTRAINT files_single_parent CHECK (
         (run_experiment_id IS NOT NULL)::int +
-        (experiment_id     IS NOT NULL)::int
-        = 1
+        (experiment_id     IS NOT NULL)::int = 1
     ),
 
-    -- At least one storage location must be set
     CONSTRAINT files_storage_location CHECK (
         gcs_uri IS NOT NULL OR file_path IS NOT NULL
     )
 );
 
+-- ==============================
+-- Indexes
+-- ==============================
+CREATE INDEX idx_samples_project      ON samples(project_id);
+CREATE INDEX idx_samples_metadata_gin ON samples  USING GIN (extra_metadata);
+CREATE INDEX idx_experiments_metadata ON experiments USING GIN (extra_metadata);
+CREATE INDEX idx_runs_flowcell        ON sequencing_runs(flowcell_id);
+CREATE INDEX idx_runs_metadata_gin    ON sequencing_runs USING GIN (extra_metadata);
 CREATE INDEX idx_files_run_experiment ON files(run_experiment_id);
 CREATE INDEX idx_files_experiment     ON files(experiment_id);
-CREATE INDEX idx_files_metadata_gin   ON files USING GIN(extra_metadata);
+CREATE INDEX idx_files_subject        ON files(subject_id);
+CREATE INDEX idx_files_metadata_gin   ON files USING GIN (extra_metadata);
+CREATE INDEX idx_projects_name        ON projects(project_name);
 
 -- ==============================
--- Metadata Registry Table
--- Governs allowed keys for JSONB fields
+-- Schema Migrations Audit Table
 -- ==============================
-CREATE TABLE metadata_registry (
-    id SERIAL PRIMARY KEY,
-    entity_type TEXT NOT NULL,       -- sample, experiment, sequencing_run
-    field_name TEXT NOT NULL,        -- tumor_stage, tissue_type, etc.
-    data_type TEXT NOT NULL,         -- text, integer, float, boolean, enum
-    allowed_values TEXT[],           -- for enums
-    description TEXT,
-    version INTEGER DEFAULT 1,
-    created_at TIMESTAMP DEFAULT now(),
-    UNIQUE(entity_type, field_name, version)
-);
-
--- ==============================
--- Schema Migrations Table (Audit & CI/CD)
--- ==============================
-CREATE TABLE schema_migrations (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS schema_migrations (
+    id             SERIAL PRIMARY KEY,
     migration_name TEXT NOT NULL,
-    applied_at TIMESTAMP DEFAULT now()
+    applied_at     TIMESTAMP DEFAULT now()
 );
 
--- ==============================
--- Indexes for Flexible Metadata
--- ==============================
-
--- GIN index on sample extra_metadata JSONB for general querying
-CREATE INDEX idx_samples_metadata_gin
-ON samples
-USING GIN (extra_metadata);
-
--- Example expression index for a commonly queried field
--- Uncomment / adjust once field is stabilized
--- CREATE INDEX idx_samples_tumor_stage
--- ON samples ((->>'tumor_stage'));
-
--- Optional indexes for other tables if needed
-CREATE INDEX idx_experiments_metadata_gin
-ON experiments
-USING GIN (extra_metadata);
-
-CREATE INDEX idx_runs_metadata_gin
-ON sequencing_runs
-USING GIN (extra_metadata);
-
--- ID concordance
-
-CREATE TABLE id_concordance (
-    id SERIAL PRIMARY KEY,
-
-    entity_type TEXT NOT NULL CHECK (
-        entity_type IN ('project', 'sample', 'experiment', 'run')
-    ),
-
-    internal_id TEXT NOT NULL,
-    source_system TEXT NOT NULL,
-    external_id TEXT NOT NULL,
-
-    created_at TIMESTAMP DEFAULT NOW(),
-
-    UNIQUE (entity_type, source_system, external_id)
-);
-
--- Index for fast lookup
-CREATE INDEX idx_id_concordance_lookup
-ON id_concordance (source_system, external_id);
-
-CREATE INDEX idx_projects_name
-ON projects(project_name);
-
-CREATE INDEX idx_samples_project
-ON samples(project_id);
-
-CREATE INDEX idx_runs_flowcell
-ON sequencing_runs(flowcell_id);
+INSERT INTO schema_migrations (migration_name) VALUES ('002_natural_keys');

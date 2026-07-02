@@ -13,7 +13,7 @@ def get_cohort_members(cur=Depends(get_db)):
     cur.execute("""
         SELECT *
         FROM cohort_members
-        ORDER by created_at DESC
+        ORDER BY added_at DESC
     """)
     
     return cur.fetchall()

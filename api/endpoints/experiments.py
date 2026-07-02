@@ -89,3 +89,21 @@ def add_experiment(experiment: ExperimentCreate, cur=Depends(get_db)):
 
     experiment_id = cur.fetchone()["id"]
     return {"id": experiment_id, "assay_type": experiment.assay_type, "library_protocol": experiment.library_protocol}
+
+## DELETE experiments
+@router.delete("/experiments/{experiment_id}")
+def delete_experiment(experiment_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM experiments
+            WHERE id = %s
+            RETURNING *
+        """, (experiment_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Experiment not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

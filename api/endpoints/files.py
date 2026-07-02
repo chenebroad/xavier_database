@@ -17,7 +17,7 @@ def get_files(cur = Depends(get_db)):
         ORDER BY created_at DESC
     """)
 
-    return cur.fetch_all()
+    return cur.fetchall()
 
 ## POST files
 @router.post("/files")
@@ -63,11 +63,16 @@ def add_files(files: FileCreate, cur = Depends(get_db)):
     #Table insertion
     cur.execute("""
         INSERT INTO files(
-            run_experiment_id, gcs_uri, gcs_bucket, file_path, file_type, file_format, size_bytes, checksum_md5, extra_metadata
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            run_experiment_id, gcs_uri, gcs_bucket, file_path,
+            file_type, file_format, size_bytes, checksum_md5,
+            subject_id, extra_metadata
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING id
-    """, (run_experiment_id, files.gcs_uri, files.gcs_bucket, files.file_path, files.file_type, files.file_format, 
-          files.size_bytes ,files.checksum_md5, psycopg2.extras.Json(files.extra_metadata)))
+    """, (
+        run_experiment_id, files.gcs_uri, files.gcs_bucket, files.file_path,
+        files.file_type, files.file_format, files.size_bytes, files.checksum_md5,
+        files.subject_id, psycopg2.extras.Json(files.extra_metadata)
+    ))
 
     file_id = cur.fetchone()["id"]
 
@@ -109,3 +114,21 @@ def update_files(file_id: str, payload: dict, cur = Depends(get_db)):
         raise HTTPException(404, "File not found")
 
     return result
+
+## DELETE files
+@router.delete("/files/{file_id}")
+def delete_file(file_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM files
+            WHERE id = %s
+            RETURNING *
+        """, (file_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "File not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

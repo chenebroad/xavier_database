@@ -4,7 +4,7 @@ from validators.extra_metadata import validate_extra_metadata
 
 class PoolCreate(BaseModel):
     pool_name: str
-    cohort_type: Optional[str] = None
+    description: Optional[str] = None
     extra_metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
     @model_validator(mode="before")

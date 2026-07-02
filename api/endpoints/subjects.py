@@ -11,7 +11,7 @@ def get_subjects(cur=Depends(get_db)):
     cur.execute("""
         SELECT *
         FROM subjects 
-        ORDER BY created_at DESC
+        ORDER BY added_at DESC
     """)
     return cur.fetchall()
 
@@ -67,3 +67,20 @@ def update_subject(pub_id: str, payload: dict, cur=Depends(get_db)):
     if not result:
         raise HTTPException(404, f"Subject with pub_id '{pub_id}' not found")
     return result
+
+@router.delete("/subjects/{subject_id}")
+def delete_subject(subject_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM subjects
+            WHERE id = %s
+            RETURNING *
+        """, (subject_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Subject not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

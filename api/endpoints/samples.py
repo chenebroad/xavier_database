@@ -95,14 +95,32 @@ def add_sample(sample: SampleCreate, cur=Depends(get_db)):
 
     cur.execute("""
         INSERT INTO samples (
-            project_id, sample_name, subject_id, status, organism, tissue, extra_metadata
+            project_id, sample_name, sample_type, organism, tissue, extra_metadata
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s)
         RETURNING id
     """, (
-        project_id, sample.sample_name, sample.subject_id, sample.status,
+        project_id, sample.sample_name, sample.sample_type,
         sample.organism, sample.tissue, psycopg2.extras.Json(sample.extra_metadata)
     ))
 
     sample_id = cur.fetchone()["id"]
-    return {"id": sample_id, "sample_name": sample.sample_name, "sample_status": sample.status}
+    return {"id": sample_id, "sample_name": sample.sample_name}
+
+## DELETE samples
+@router.delete("/samples/{sample_id}")
+def delete_sample(sample_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM samples
+            WHERE id = %s
+            RETURNING *
+        """, (sample_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Sample not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))

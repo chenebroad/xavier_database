@@ -45,9 +45,28 @@ def update_project(project_id: str, payload: dict, cur = Depends(get_db)):
     result = cur.fetchone()
 
     if not result:
-        raise HTTPException(404, "Sample not found")
+        raise HTTPException(404, "Project not found")
 
-    return result  
+    return result
+
+## DELETE projects
+@router.delete("/projects/{project_id}")
+def delete_project(project_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM projects
+            WHERE id = %s
+            RETURNING *
+        """, (project_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Project not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
 ## POST projects
 
 @router.post("/projects")

@@ -5,10 +5,9 @@ from validators.extra_metadata import validate_extra_metadata
 class SampleCreate(BaseModel):
     project_name: str
     sample_name: str
-    subject_id: str
-    status: str
-    organism: str
-    tissue: str
+    sample_type: Optional[str] = "individual"
+    organism: Optional[str] = None
+    tissue: Optional[str] = None
     extra_metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
     @model_validator(mode="before")

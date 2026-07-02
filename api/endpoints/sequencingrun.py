@@ -11,7 +11,7 @@ router = APIRouter()
 @router.get("/sequencing")
 def get_sequencing(cur= Depends(get_db)):
 
-    cur.execute(""""
+    cur.execute("""
         SELECT *
         FROM sequencing_runs
         ORDER BY created_at DESC
@@ -71,3 +71,21 @@ def update_sequencing(sequencing_id: str, payload: dict, cur = Depends(get_db)):
         raise HTTPException(404, "Sequencing run not found")
 
     return result
+
+## DELETE sequencing
+@router.delete("/sequencing/{sequencing_id}")
+def delete_sequencing(sequencing_id: str, cur=Depends(get_db)):
+    try:
+        cur.execute("""
+            DELETE FROM sequencing_runs
+            WHERE id = %s
+            RETURNING *
+        """, (sequencing_id,))
+        result = cur.fetchone()
+        if not result:
+            raise HTTPException(404, "Sequencing run not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
