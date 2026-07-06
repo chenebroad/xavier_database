@@ -406,10 +406,16 @@ with tab2:
         options = fetch_options(*fetch_from) if fetch_from else []
 
         if options:
-            params[key] = st.selectbox(label, [""] + options)
+            selected = st.selectbox(label, [""] + options)
+            manual   = st.text_input(
+                f"Or type a {label.lower()} manually",
+                placeholder="Leave blank to use selection above",
+                key=f"manual_{key}"
+            )
+            params[key] = manual.strip() if manual.strip() else selected
         else:
             params[key] = st.text_input(label, placeholder="Type to search…")
-            if not options and fetch_from:
+            if fetch_from:
                 st.caption("⚠ Could not load options — enter manually")
 
     if st.button("Run quick query"):
