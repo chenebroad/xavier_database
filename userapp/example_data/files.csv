@@ -1,201 +1,201 @@
-sample_name,assay_type,library_prep_date,flowcell_id,lane,gcs_uri,gcs_bucket,file_path,file_type,file_format,size_bytes,checksum_md5,extra_metadata
-SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00001_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00001_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00002_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00002_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00003_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00003_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00004_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00004_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00005_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00005_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00006_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00006_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00007_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00007_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00008_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00008_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00009_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00009_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00010_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00010_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,3,gs://lims-raw/FC-00001/lane3/SAMPLE-00011_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,3,gs://lims-raw/FC-00001/lane3/SAMPLE-00011_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,3,gs://lims-raw/FC-00002/lane3/SAMPLE-00012_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,3,gs://lims-raw/FC-00002/lane3/SAMPLE-00012_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,4,gs://lims-raw/FC-00003/lane4/SAMPLE-00013_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,4,gs://lims-raw/FC-00003/lane4/SAMPLE-00013_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,4,gs://lims-raw/FC-00004/lane4/SAMPLE-00014_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,4,gs://lims-raw/FC-00004/lane4/SAMPLE-00014_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,1,gs://lims-raw/FC-00005/lane1/SAMPLE-00015_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,1,gs://lims-raw/FC-00005/lane1/SAMPLE-00015_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,4,gs://lims-raw/FC-00001/lane4/SAMPLE-00016_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,4,gs://lims-raw/FC-00001/lane4/SAMPLE-00016_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,4,gs://lims-raw/FC-00002/lane4/SAMPLE-00017_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,4,gs://lims-raw/FC-00002/lane4/SAMPLE-00017_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,1,gs://lims-raw/FC-00003/lane1/SAMPLE-00018_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,1,gs://lims-raw/FC-00003/lane1/SAMPLE-00018_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,1,gs://lims-raw/FC-00004/lane1/SAMPLE-00019_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,1,gs://lims-raw/FC-00004/lane1/SAMPLE-00019_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,2,gs://lims-raw/FC-00005/lane2/SAMPLE-00020_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,2,gs://lims-raw/FC-00005/lane2/SAMPLE-00020_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00021_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00021_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00022_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00022_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00023_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00023_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00024_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00024_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00025_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00025_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00026_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00026_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00027_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00027_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00028_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00028_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00029_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00029_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00030_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00030_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,3,gs://lims-raw/FC-00001/lane3/SAMPLE-00031_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,3,gs://lims-raw/FC-00001/lane3/SAMPLE-00031_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,3,gs://lims-raw/FC-00002/lane3/SAMPLE-00032_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,3,gs://lims-raw/FC-00002/lane3/SAMPLE-00032_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,4,gs://lims-raw/FC-00003/lane4/SAMPLE-00033_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,4,gs://lims-raw/FC-00003/lane4/SAMPLE-00033_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,4,gs://lims-raw/FC-00004/lane4/SAMPLE-00034_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,4,gs://lims-raw/FC-00004/lane4/SAMPLE-00034_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,1,gs://lims-raw/FC-00005/lane1/SAMPLE-00035_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,1,gs://lims-raw/FC-00005/lane1/SAMPLE-00035_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,4,gs://lims-raw/FC-00001/lane4/SAMPLE-00036_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,4,gs://lims-raw/FC-00001/lane4/SAMPLE-00036_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,4,gs://lims-raw/FC-00002/lane4/SAMPLE-00037_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,4,gs://lims-raw/FC-00002/lane4/SAMPLE-00037_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,1,gs://lims-raw/FC-00003/lane1/SAMPLE-00038_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,1,gs://lims-raw/FC-00003/lane1/SAMPLE-00038_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,1,gs://lims-raw/FC-00004/lane1/SAMPLE-00039_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,1,gs://lims-raw/FC-00004/lane1/SAMPLE-00039_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,2,gs://lims-raw/FC-00005/lane2/SAMPLE-00040_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,2,gs://lims-raw/FC-00005/lane2/SAMPLE-00040_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00041_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,1,gs://lims-raw/FC-00001/lane1/SAMPLE-00041_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00042_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,1,gs://lims-raw/FC-00002/lane1/SAMPLE-00042_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00043_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,2,gs://lims-raw/FC-00003/lane2/SAMPLE-00043_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00044_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,2,gs://lims-raw/FC-00004/lane2/SAMPLE-00044_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00045_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,3,gs://lims-raw/FC-00005/lane3/SAMPLE-00045_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00046_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,2,gs://lims-raw/FC-00001/lane2/SAMPLE-00046_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00047_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,2,gs://lims-raw/FC-00002/lane2/SAMPLE-00047_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00048_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,3,gs://lims-raw/FC-00003/lane3/SAMPLE-00048_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00049_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,3,gs://lims-raw/FC-00004/lane3/SAMPLE-00049_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00050_R1.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R1""}"
-SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,4,gs://lims-raw/FC-00005/lane4/SAMPLE-00050_R2.fastq.gz,lims-raw,,fastq,fastq.gz,,,"{""read"": ""R2""}"
-SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00001/2026-03-01/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00001/2026-03-01/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00002/2026-03-02/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00002/2026-03-02/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00003/2026-03-03/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00003/2026-03-03/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00004/2026-03-04/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00004/2026-03-04/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00005/2026-03-05/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00005/2026-03-05/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00006/2026-03-06/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00006/2026-03-06/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00007/2026-03-07/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00007/2026-03-07/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00008/2026-03-08/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00008/2026-03-08/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00009/2026-03-09/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00009/2026-03-09/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00010/2026-03-10/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00010/2026-03-10/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00011/2026-03-11/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00011/2026-03-11/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00012/2026-03-12/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00012/2026-03-12/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00013/2026-03-13/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00013/2026-03-13/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00014/2026-03-14/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00014/2026-03-14/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00015/2026-03-15/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00015/2026-03-15/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00016/2026-03-16/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00016/2026-03-16/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00017/2026-03-17/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00017/2026-03-17/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00018/2026-03-18/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00018/2026-03-18/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00019/2026-03-19/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00019/2026-03-19/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00020/2026-03-20/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00020/2026-03-20/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00021/2026-03-21/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00021/2026-03-21/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00022/2026-03-22/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00022/2026-03-22/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00023/2026-03-23/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00023/2026-03-23/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00024/2026-03-24/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00024/2026-03-24/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00025/2026-03-25/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00025/2026-03-25/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00026/2026-03-26/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00026/2026-03-26/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00027/2026-03-27/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00027/2026-03-27/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00028/2026-03-28/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00028/2026-03-28/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00029/2026-03-29/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00029/2026-03-29/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00030/2026-03-30/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00030/2026-03-30/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00031/2026-03-31/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00031/2026-03-31/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00032/2026-04-01/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00032/2026-04-01/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00033/2026-04-02/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00033/2026-04-02/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00034/2026-04-03/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00034/2026-04-03/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00035/2026-04-04/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00035/2026-04-04/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00036/2026-04-05/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00036/2026-04-05/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00037/2026-04-06/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00037/2026-04-06/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00038/2026-04-07/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00038/2026-04-07/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00039/2026-04-08/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00039/2026-04-08/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00040/2026-04-09/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00040/2026-04-09/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00041/2026-04-10/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,,gs://lims-analysis/rna_seq/SAMPLE-00041/2026-04-10/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00042/2026-04-11/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00042/2026-04-11/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00043/2026-04-12/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00043/2026-04-12/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00044/2026-04-13/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,,gs://lims-analysis/chip_seq/SAMPLE-00044/2026-04-13/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00045/2026-04-14/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00045/2026-04-14/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00046/2026-04-15/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,,gs://lims-analysis/atac_seq/SAMPLE-00046/2026-04-15/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00047/2026-04-16/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,,gs://lims-analysis/rna_seq/SAMPLE-00047/2026-04-16/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00048/2026-04-17/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,,,{}
-SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,,gs://lims-analysis/chip_seq/SAMPLE-00048/2026-04-17/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00049/2026-04-18/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,,gs://lims-analysis/rna_seq/SAMPLE-00049/2026-04-18/qc_html.html,lims-analysis,,qc_html,html,,,{}
-SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00050/2026-04-19/counts.tsv,lims-analysis,,counts,tsv,,,{}
-SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,,gs://lims-analysis/atac_seq/SAMPLE-00050/2026-04-19/qc_html.html,lims-analysis,,qc_html,html,,,{}
+sample_name,assay_type,library_prep_date,flowcell_id,gcs_uri,gcs_bucket,file_path,file_type,file_format,extra_metadata
+SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00001_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00001_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00002_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00002_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00003_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00003_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00004_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00004_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00005_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00005_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00006_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00006_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00007_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00007_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00008_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00008_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00009_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00009_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00010_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00010_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,gs://lims-raw/FC-00001/lane3/SAMPLE-00011_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,gs://lims-raw/FC-00001/lane3/SAMPLE-00011_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,gs://lims-raw/FC-00002/lane3/SAMPLE-00012_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,gs://lims-raw/FC-00002/lane3/SAMPLE-00012_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,gs://lims-raw/FC-00003/lane4/SAMPLE-00013_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,gs://lims-raw/FC-00003/lane4/SAMPLE-00013_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,gs://lims-raw/FC-00004/lane4/SAMPLE-00014_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,gs://lims-raw/FC-00004/lane4/SAMPLE-00014_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,gs://lims-raw/FC-00005/lane1/SAMPLE-00015_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,gs://lims-raw/FC-00005/lane1/SAMPLE-00015_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,gs://lims-raw/FC-00001/lane4/SAMPLE-00016_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,gs://lims-raw/FC-00001/lane4/SAMPLE-00016_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,gs://lims-raw/FC-00002/lane4/SAMPLE-00017_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,gs://lims-raw/FC-00002/lane4/SAMPLE-00017_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,gs://lims-raw/FC-00003/lane1/SAMPLE-00018_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,gs://lims-raw/FC-00003/lane1/SAMPLE-00018_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,gs://lims-raw/FC-00004/lane1/SAMPLE-00019_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,gs://lims-raw/FC-00004/lane1/SAMPLE-00019_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,gs://lims-raw/FC-00005/lane2/SAMPLE-00020_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,gs://lims-raw/FC-00005/lane2/SAMPLE-00020_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00021_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00021_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00022_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00022_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00023_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00023_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00024_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00024_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00025_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00025_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00026_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00026_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00027_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00027_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00028_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00028_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00029_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00029_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00030_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00030_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,gs://lims-raw/FC-00001/lane3/SAMPLE-00031_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,gs://lims-raw/FC-00001/lane3/SAMPLE-00031_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,gs://lims-raw/FC-00002/lane3/SAMPLE-00032_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,gs://lims-raw/FC-00002/lane3/SAMPLE-00032_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,gs://lims-raw/FC-00003/lane4/SAMPLE-00033_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,gs://lims-raw/FC-00003/lane4/SAMPLE-00033_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,gs://lims-raw/FC-00004/lane4/SAMPLE-00034_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,gs://lims-raw/FC-00004/lane4/SAMPLE-00034_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,gs://lims-raw/FC-00005/lane1/SAMPLE-00035_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,gs://lims-raw/FC-00005/lane1/SAMPLE-00035_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,gs://lims-raw/FC-00001/lane4/SAMPLE-00036_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,gs://lims-raw/FC-00001/lane4/SAMPLE-00036_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,gs://lims-raw/FC-00002/lane4/SAMPLE-00037_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,gs://lims-raw/FC-00002/lane4/SAMPLE-00037_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,gs://lims-raw/FC-00003/lane1/SAMPLE-00038_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,gs://lims-raw/FC-00003/lane1/SAMPLE-00038_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,gs://lims-raw/FC-00004/lane1/SAMPLE-00039_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,gs://lims-raw/FC-00004/lane1/SAMPLE-00039_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,gs://lims-raw/FC-00005/lane2/SAMPLE-00040_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,gs://lims-raw/FC-00005/lane2/SAMPLE-00040_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00041_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,gs://lims-raw/FC-00001/lane1/SAMPLE-00041_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00042_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,gs://lims-raw/FC-00002/lane1/SAMPLE-00042_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00043_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,gs://lims-raw/FC-00003/lane2/SAMPLE-00043_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00044_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,gs://lims-raw/FC-00004/lane2/SAMPLE-00044_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00045_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,gs://lims-raw/FC-00005/lane3/SAMPLE-00045_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00046_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,gs://lims-raw/FC-00001/lane2/SAMPLE-00046_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00047_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,gs://lims-raw/FC-00002/lane2/SAMPLE-00047_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00048_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,gs://lims-raw/FC-00003/lane3/SAMPLE-00048_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00049_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,gs://lims-raw/FC-00004/lane3/SAMPLE-00049_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00050_R1.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R1""}"
+SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,gs://lims-raw/FC-00005/lane4/SAMPLE-00050_R2.fastq.gz,lims-raw,,fastq,fastq.gz,"{""read"": ""R2""}"
+SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00001/2026-03-01/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00001,RNA-Seq,3/1/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00001/2026-03-01/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00002/2026-03-02/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00002,RNA-Seq,3/2/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00002/2026-03-02/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00003/2026-03-03/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00003,ChIP-Seq,3/3/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00003/2026-03-03/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00004/2026-03-04/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00004,ChIP-Seq,3/4/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00004/2026-03-04/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00005/2026-03-05/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00005,ATAC-Seq,3/5/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00005/2026-03-05/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00006/2026-03-06/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00006,ATAC-Seq,3/6/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00006/2026-03-06/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00007/2026-03-07/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00007,RNA-Seq,3/7/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00007/2026-03-07/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00008/2026-03-08/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00008,ChIP-Seq,3/8/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00008/2026-03-08/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00009/2026-03-09/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00009,RNA-Seq,3/9/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00009/2026-03-09/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00010/2026-03-10/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00010,ATAC-Seq,3/10/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00010/2026-03-10/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00011/2026-03-11/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00011,RNA-Seq,3/11/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00011/2026-03-11/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00012/2026-03-12/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00012,RNA-Seq,3/12/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00012/2026-03-12/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00013/2026-03-13/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00013,ChIP-Seq,3/13/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00013/2026-03-13/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00014/2026-03-14/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00014,ChIP-Seq,3/14/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00014/2026-03-14/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00015/2026-03-15/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00015,ATAC-Seq,3/15/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00015/2026-03-15/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00016/2026-03-16/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00016,ATAC-Seq,3/16/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00016/2026-03-16/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00017/2026-03-17/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00017,RNA-Seq,3/17/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00017/2026-03-17/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00018/2026-03-18/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00018,ChIP-Seq,3/18/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00018/2026-03-18/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00019/2026-03-19/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00019,RNA-Seq,3/19/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00019/2026-03-19/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00020/2026-03-20/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00020,ATAC-Seq,3/20/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00020/2026-03-20/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00021/2026-03-21/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00021,RNA-Seq,3/21/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00021/2026-03-21/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00022/2026-03-22/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00022,RNA-Seq,3/22/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00022/2026-03-22/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00023/2026-03-23/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00023,ChIP-Seq,3/23/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00023/2026-03-23/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00024/2026-03-24/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00024,ChIP-Seq,3/24/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00024/2026-03-24/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00025/2026-03-25/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00025,ATAC-Seq,3/25/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00025/2026-03-25/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00026/2026-03-26/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00026,ATAC-Seq,3/26/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00026/2026-03-26/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00027/2026-03-27/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00027,RNA-Seq,3/27/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00027/2026-03-27/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00028/2026-03-28/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00028,ChIP-Seq,3/28/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00028/2026-03-28/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00029/2026-03-29/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00029,RNA-Seq,3/29/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00029/2026-03-29/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00030/2026-03-30/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00030,ATAC-Seq,3/30/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00030/2026-03-30/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00031/2026-03-31/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00031,RNA-Seq,3/31/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00031/2026-03-31/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00032/2026-04-01/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00032,RNA-Seq,4/1/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00032/2026-04-01/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00033/2026-04-02/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00033,ChIP-Seq,4/2/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00033/2026-04-02/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00034/2026-04-03/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00034,ChIP-Seq,4/3/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00034/2026-04-03/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00035/2026-04-04/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00035,ATAC-Seq,4/4/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00035/2026-04-04/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00036/2026-04-05/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00036,ATAC-Seq,4/5/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00036/2026-04-05/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00037/2026-04-06/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00037,RNA-Seq,4/6/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00037/2026-04-06/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00038/2026-04-07/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00038,ChIP-Seq,4/7/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00038/2026-04-07/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00039/2026-04-08/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00039,RNA-Seq,4/8/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00039/2026-04-08/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00040/2026-04-09/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00040,ATAC-Seq,4/9/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00040/2026-04-09/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00041/2026-04-10/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00041,RNA-Seq,4/10/26,FC-00001,gs://lims-analysis/rna_seq/SAMPLE-00041/2026-04-10/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00042/2026-04-11/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00042,RNA-Seq,4/11/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00042/2026-04-11/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00043/2026-04-12/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00043,ChIP-Seq,4/12/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00043/2026-04-12/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00044/2026-04-13/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00044,ChIP-Seq,4/13/26,FC-00004,gs://lims-analysis/chip_seq/SAMPLE-00044/2026-04-13/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00045/2026-04-14/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00045,ATAC-Seq,4/14/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00045/2026-04-14/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00046/2026-04-15/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00046,ATAC-Seq,4/15/26,FC-00001,gs://lims-analysis/atac_seq/SAMPLE-00046/2026-04-15/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00047/2026-04-16/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00047,RNA-Seq,4/16/26,FC-00002,gs://lims-analysis/rna_seq/SAMPLE-00047/2026-04-16/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00048/2026-04-17/vcf.vcf.gz,lims-analysis,,vcf,vcf.gz,{}
+SAMPLE-00048,ChIP-Seq,4/17/26,FC-00003,gs://lims-analysis/chip_seq/SAMPLE-00048/2026-04-17/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00049/2026-04-18/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00049,RNA-Seq,4/18/26,FC-00004,gs://lims-analysis/rna_seq/SAMPLE-00049/2026-04-18/qc_html.html,lims-analysis,,qc_html,html,{}
+SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00050/2026-04-19/counts.tsv,lims-analysis,,counts,tsv,{}
+SAMPLE-00050,ATAC-Seq,4/19/26,FC-00005,gs://lims-analysis/atac_seq/SAMPLE-00050/2026-04-19/qc_html.html,lims-analysis,,qc_html,html,{}

@@ -1,6 +1,11 @@
 import streamlit as st
 import pandas as pd
 import json
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from schema import ENTITY_SCHEMAS
 from api_client import (
     create_project, create_sample, create_experiment,
     create_run, create_flowcell_library, create_file,
@@ -9,71 +14,19 @@ from api_client import (
 )
 import math
 
-ENTITY_SCHEMAS = {
-    "projects": {
-        "required": ["project_name"],
-        "optional": ["description"],
-        "api": create_project
-    },
-    "samples": {
-        "required": ["sample_name", "project_name", "organism", "tissue"],
-        "optional": ["sample_type"],
-        "api": create_sample
-    },
-    "experiments": {
-        "required": ["sample_name", "assay_type", "library_prep_date"],
-        "optional": ["library_protocol", "library_version"],
-        "api": create_experiment
-    },
-    "sequencing_runs": {
-        "required": ["flowcell_id"],
-        "optional": ["machine", "run_date", "read_length", "sequencing_center", "bcl_gcs_uri"],
-        "api": create_run
-    },
-    "flowcell_libraries": {
-        "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id", "lane", "index_sequence"],
-        "optional": [],
-        "api": create_flowcell_library
-    },
-    "files": {
-        "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id",
-                     "gcs_uri", "file_type", "file_format"],
-        "optional": ["gcs_bucket", "file_path", "subject_id"],
-        "api": create_file
-    },
-    "cohorts": {
-        "required": ["cohort_name"],
-        "optional": ["cohort_type", "description"],
-        "api": create_cohort
-    },
-    "cohort_members": {
-        "required": ["cohort_name", "sample_name"],
-        "optional": [],
-        "api": create_cohort_member,
-        "no_metadata": True
-    },
-    "pools": {
-        "required": ["pool_name"],
-        "optional": [],
-        "api": create_pool
-    },
-    "pool_members": {
-        "required": ["pool_name", "sample_name", "assay_type", "library_prep_date"],
-        "optional": [],
-        "api": create_pool_member,
-        "no_metadata": True
-    },
-    "subjects": {
-        "required": ["pub_id", "freezerworks_id"],  
-        "optional": [],  
-        "api": create_subject,  
-    },
-    "sample_sources": {
-        "required": ["sample_name", "pub_id", "freezerworks_id"],
-        "optional": [],
-        "api": create_sample_source,
-        "no_metadata": True
-    }
+API_FN = {
+    "projects":          create_project,
+    "subjects":          create_subject,
+    "samples":           create_sample,
+    "sample_sources":    create_sample_source,
+    "cohorts":           create_cohort,
+    "cohort_members":    create_cohort_member,
+    "experiments":       create_experiment,
+    "pools":             create_pool,
+    "pool_members":      create_pool_member,
+    "sequencing_runs":   create_run,
+    "flowcell_libraries": create_flowcell_library,
+    "files":             create_file,
 }
 
 st.title("📥 Ingest Data")
@@ -159,7 +112,7 @@ with tab1:
     required_cols = schema["required"]
     optional_cols = schema["optional"]
     no_metadata   = schema.get("no_metadata", False)
-    api_fn        = schema["api"]
+    api_fn        = API_FN[entity]
 
     schema_helper(entity)
     st.divider()
@@ -226,7 +179,7 @@ with tab2:
     required_cols = schema["required"]
     optional_cols = schema["optional"]
     no_metadata   = schema.get("no_metadata", False)
-    api_fn        = schema["api"]
+    api_fn        = API_FN[entity]
 
     schema_helper(entity)
     st.divider()
