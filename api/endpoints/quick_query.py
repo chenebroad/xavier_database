@@ -51,10 +51,10 @@ def quick_query(
                         s.sample_name,
                         sq.flowcell_id
                     FROM files f
-                    JOIN run_experiments re ON f.run_experiment_id = re.id
-                    JOIN experiments e      ON re.experiment_id = e.id
-                    JOIN sequencing_runs sq ON re.run_id = sq.id
-                    JOIN samples s          ON e.sample_id = s.id
+                    JOIN flowcell_libraries fl ON f.flowcell_library_id = fl.id
+                    JOIN experiments e         ON fl.experiment_id = e.id
+                    JOIN sequencing_runs sq    ON fl.run_id = sq.id
+                    JOIN samples s             ON e.sample_id = s.id
                     WHERE s.sample_name = %s
                 """, (sample_name,))
 
@@ -70,11 +70,11 @@ def quick_query(
                         e.assay_type,
                         sq.flowcell_id
                     FROM files f
-                    JOIN run_experiments re ON f.run_experiment_id = re.id
-                    JOIN experiments e      ON re.experiment_id = e.id
-                    JOIN sequencing_runs sq ON re.run_id = sq.id
-                    JOIN samples s          ON e.sample_id = s.id
-                    JOIN projects p         ON s.project_id = p.id
+                    JOIN flowcell_libraries fl ON f.flowcell_library_id = fl.id
+                    JOIN experiments e         ON fl.experiment_id = e.id
+                    JOIN sequencing_runs sq    ON fl.run_id = sq.id
+                    JOIN samples s             ON e.sample_id = s.id
+                    JOIN projects p            ON s.project_id = p.id
                     WHERE p.project_name = %s
                 """, (project_name,))
 

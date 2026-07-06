@@ -19,39 +19,39 @@ TABLES = {
     "experiments":     {"editable": True},
     "pools":           {"editable": True},
     "pool_members":    {"editable": False},  # junction
-    "sequencing_runs": {"editable": True},
-    "run_experiments": {"editable": False},  # junction
-    "files":           {"editable": True},
+    "sequencing_runs":    {"editable": True},
+    "flowcell_libraries": {"editable": False},  # junction
+    "files":              {"editable": True},
 }
 
 QUICK_QUERIES = {
     "All Samples from Project": {
         "endpoint": "samples_by_project",
-        "params":   ["project_name"]
+        "params":   [{"key": "project_name", "fetch_from": ("projects", "project_name")}]
     },
     "All Experiments from Sample": {
         "endpoint": "experiments_by_sample",
-        "params":   ["sample_name"]
+        "params":   [{"key": "sample_name", "fetch_from": ("samples", "sample_name")}]
     },
     "All Files from Sample": {
         "endpoint": "files_by_sample",
-        "params":   ["sample_name"]
+        "params":   [{"key": "sample_name", "fetch_from": ("samples", "sample_name")}]
     },
     "All Files from Project": {
         "endpoint": "files_by_project",
-        "params":   ["project_name"]
+        "params":   [{"key": "project_name", "fetch_from": ("projects", "project_name")}]
     },
     "All Samples from Cohort": {
         "endpoint": "samples_by_cohort",
-        "params":   ["cohort_name"]
+        "params":   [{"key": "cohort_name", "fetch_from": ("cohorts", "cohort_name")}]
     },
     "All Subjects from Sample": {
         "endpoint": "subjects_by_sample",
-        "params":   ["sample_name"]
+        "params":   [{"key": "sample_name", "fetch_from": ("samples", "sample_name")}]
     },
     "All Experiments from Pool": {
         "endpoint": "experiments_by_pool",
-        "params":   ["pool_name"]
+        "params":   [{"key": "pool_name", "fetch_from": ("pools", "pool_name")}]
     },
 }
 
@@ -144,6 +144,15 @@ def compute_changes_from_csv(original_df: pd.DataFrame, uploaded_df: pd.DataFram
                     "id":    original_row.get("id"),
                 })
     return changes
+
+
+@st.cache_data(ttl=60)
+def fetch_options(table: str, name_col: str) -> list[str]:
+    try:
+        data = query_data(table, limit=500)
+        return sorted({r[name_col] for r in data if r.get(name_col)})
+    except Exception:
+        return []
 
 
 def apply_changes(changes: list[dict], table: str) -> tuple[int, list[dict]]:
@@ -389,8 +398,19 @@ with tab2:
     query_name = st.selectbox("Select query", list(QUICK_QUERIES.keys()))
 
     params = {}
-    for param in QUICK_QUERIES[query_name]["params"]:
-        params[param] = st.text_input(param.replace("_", " ").title())
+    for param_def in QUICK_QUERIES[query_name]["params"]:
+        key   = param_def["key"]
+        label = key.replace("_", " ").title()
+        fetch_from = param_def.get("fetch_from")
+
+        options = fetch_options(*fetch_from) if fetch_from else []
+
+        if options:
+            params[key] = st.selectbox(label, [""] + options)
+        else:
+            params[key] = st.text_input(label, placeholder="Type to search…")
+            if not options and fetch_from:
+                st.caption("⚠ Could not load options — enter manually")
 
     if st.button("Run quick query"):
         try:

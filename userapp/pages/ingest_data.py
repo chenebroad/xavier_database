@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from api_client import (
     create_project, create_sample, create_experiment,
-    create_run, create_seqexp, create_file,
+    create_run, create_flowcell_library, create_file,
     create_cohort, create_cohort_member,
     create_pool, create_pool_member, create_subject, create_sample_source
 )
@@ -17,7 +17,7 @@ ENTITY_SCHEMAS = {
     },
     "samples": {
         "required": ["sample_name", "project_name", "organism", "tissue"],
-        "optional": ["sample_type", "status"],
+        "optional": ["sample_type"],
         "api": create_sample
     },
     "experiments": {
@@ -26,24 +26,24 @@ ENTITY_SCHEMAS = {
         "api": create_experiment
     },
     "sequencing_runs": {
-        "required": ["flowcell_id", "machine", "run_date", "read_length"],
-        "optional": ["sequencing_center"],
+        "required": ["flowcell_id"],
+        "optional": ["machine", "run_date", "read_length", "sequencing_center", "bcl_gcs_uri"],
         "api": create_run
     },
-    "seqexp": {
+    "flowcell_libraries": {
         "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id", "lane", "index_sequence"],
         "optional": [],
-        "api": create_seqexp
+        "api": create_flowcell_library
     },
     "files": {
         "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id",
-                     "gcs_uri", "file_type", "file_format", "checksum_md5"],
-        "optional": ["lane", "gcs_bucket", "file_path", "size_bytes"],
+                     "gcs_uri", "file_type", "file_format"],
+        "optional": ["gcs_bucket", "file_path", "subject_id"],
         "api": create_file
     },
     "cohorts": {
         "required": ["cohort_name"],
-        "optional": ["cohort_type"],
+        "optional": ["cohort_type", "description"],
         "api": create_cohort
     },
     "cohort_members": {
