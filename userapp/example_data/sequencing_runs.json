@@ -1,7 +1,0 @@
-[
-  {"run_name": "RUN-SEQ-001","flowcell_id": "FC-00001","sequencer_model": "NovaSeq6000","run_date": "2026-03-15","extra_metadata": {"operator": "Alice"}},
-  {"run_name": "RUN-SEQ-002","flowcell_id": "FC-00002","sequencer_model": "NextSeq2000","run_date": "2026-03-16","extra_metadata": {"operator": "Bob"}},
-  {"run_name": "RUN-SEQ-003","flowcell_id": "FC-00003","sequencer_model": "NovaSeq6000","run_date": "2026-03-17","extra_metadata": {"operator": "Carol"}},
-  {"run_name": "RUN-SEQ-004","flowcell_id": "FC-00004","sequencer_model": "NextSeq2000","run_date": "2026-03-18","extra_metadata": {"operator": "Alice"}},
-  {"run_name": "RUN-SEQ-005","flowcell_id": "FC-00005","sequencer_model": "NovaSeq6000","run_date": "2026-03-19","extra_metadata": {"operator": "Bob"}}
-]

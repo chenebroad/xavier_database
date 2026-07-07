@@ -1,6 +1,10 @@
-project_name,description,lead,priority
-PROJ-00001,Project 1,Dr. Smith,high
-PROJ-00002,Project 2,Dr. Lee,medium
-PROJ-00003,Project 3,Dr. Chen,low
-PROJ-00004,Project 4,Dr. Patel,high
-PROJ-00005,Project 5,Dr. Gomez,medium
+project_name,description,lead,priority,location
+PROJ-00001,Project 1,Dr. Smith,high,
+PROJ-00002,Project 2,Dr. Lee,medium,
+PROJ-00003,Project 3,Dr. Chen,low,
+PROJ-00004,Project 4,Dr. Patel,high,
+PROJ-00005,Project 5,Dr. Gomez,medium,
+FHS_Ex4,Framingham Heart Study Exam 4,Ramnik,medium,Framingham
+FHS_Ex3,Framingham Heart Study Exam 3,Stuart,medium,Framingham
+20260522_NW_RNASeq,Understanding the role of the novel ER stress mediator Qrich1 in mouse colitis models,Daniel Graham,medium,MGH
+784_3'GEM-X,Nates' project,Ramnik,medium,Broad

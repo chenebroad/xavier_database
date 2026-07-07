@@ -1,7 +1,0 @@
-[
-  {"project_name": "PROJ-00001", "description": "Project 1", "extra_metadata": {"lead": "Dr. Smith", "priority": "high"}},
-  {"project_name": "PROJ-00002", "description": "Project 2", "extra_metadata": {"lead": "Dr. Lee", "priority": "medium"}},
-  {"project_name": "PROJ-00003", "description": "Project 3", "extra_metadata": {"lead": "Dr. Chen", "priority": "low"}},
-  {"project_name": "PROJ-00004", "description": "Project 4", "extra_metadata": {"lead": "Dr. Patel", "priority": "high"}},
-  {"project_name": "PROJ-00005", "description": "Project 5", "extra_metadata": {"lead": "Dr. Gomez", "priority": "medium"}}
-]

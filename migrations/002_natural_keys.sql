@@ -225,6 +225,20 @@ CREATE INDEX idx_files_subject          ON files(subject_id);
 CREATE INDEX idx_files_metadata_gin     ON files USING GIN (extra_metadata);
 CREATE INDEX idx_projects_name        ON projects(project_name);
 
+CREATE TABLE metadata_registry (
+    id SERIAL PRIMARY KEY,
+    entity_type TEXT NOT NULL,       -- sample, experiment, sequencing_run
+    field_name TEXT NOT NULL,        -- tumor_stage, tissue_type, etc.
+    data_type TEXT NOT NULL,         -- text, integer, float, boolean, enum
+    required BOOLEAN DEFAULT false,
+    allowed_values TEXT[],           -- for enums
+    description TEXT,
+    version INTEGER DEFAULT 1,
+    deprecated BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT now(),
+    UNIQUE(entity_type, field_name, version)
+);
+
 -- ==============================
 -- Schema Migrations Audit Table
 -- ==============================
