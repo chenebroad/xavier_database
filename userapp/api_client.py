@@ -102,6 +102,17 @@ def update_row(table, row_id, payload):
     return res.json()
 
 
+def run_sql_query(sql):
+    res = requests.post(f"{BASE_URL}/sql", json={"sql": sql})
+    if res.status_code != 200:
+        try:
+            err = res.json()
+        except Exception:
+            err = res.text
+        raise Exception(err)
+    return res.json()
+
+
 # -------------------------
 # Create
 # -------------------------
