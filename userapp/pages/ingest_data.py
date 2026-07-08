@@ -29,9 +29,123 @@ API_FN = {
     "files":             create_file,
 }
 
+# ── Template system ───────────────────────────────────────────────────────────
+
+EXAMPLE_VALUES = {
+    "project_name":      "IBD_Atlas_2026",
+    "description":       "Inflammatory bowel disease single-cell atlas",
+    "sample_name":       "SAMPLE-001",
+    "organism":          "Homo sapiens",
+    "tissue":            "colon",
+    "sample_type":       "individual",
+    "pub_id":            "DONOR-001",
+    "freezerworks_id":   "FW-12345",
+    "assay_type":        "scRNA-seq",
+    "library_prep_date": "2026-06-01",
+    "library_protocol":  "10x Chromium v3",
+    "library_version":   "GEX v3.1",
+    "flowcell_id":       "HXXXXDRXY",
+    "machine":           "NovaSeq 6000",
+    "run_date":          "2026-06-15",
+    "read_length":       "28x90",
+    "sequencing_center": "Broad Genomics Platform",
+    "bcl_gcs_uri":       "gs://my-bucket/run/HXXXXDRXY/",
+    "lane":              "1",
+    "index_sequence":    "ATCGATCG",
+    "cohort_name":       "Healthy_Controls",
+    "cohort_type":       "biological",
+    "pool_name":         "Pool_A",
+    "gcs_uri":           "gs://my-bucket/samples/SAMPLE-001.fastq.gz",
+    "gcs_bucket":        "my-bucket",
+    "file_path":         "/path/to/SAMPLE-001.fastq.gz",
+    "file_type":         "fastq",
+    "file_format":       "fastq.gz",
+    "subject_id":        "XSU00001",
+}
+
+TEMPLATE_CATALOG = [
+    # ── Single-entity ──────────────────────────────────────────────────────
+    {"name": "Projects",           "file": "xavier_template_projects.csv",
+     "desc": "Register new top-level projects or studies.",
+     "entities": ["projects"], "workflow": False},
+    {"name": "Subjects",           "file": "xavier_template_subjects.csv",
+     "desc": "Register donors, patients, or animal subjects.",
+     "entities": ["subjects"], "workflow": False},
+    {"name": "Samples",            "file": "xavier_template_samples.csv",
+     "desc": "Register biospecimens under an existing project.",
+     "entities": ["samples"], "workflow": False},
+    {"name": "Sample Sources",     "file": "xavier_template_sample_sources.csv",
+     "desc": "Link subjects to samples (one row per subject–sample pair).",
+     "entities": ["sample_sources"], "workflow": False},
+    {"name": "Experiments",        "file": "xavier_template_experiments.csv",
+     "desc": "Register library preparations under an existing sample.",
+     "entities": ["experiments"], "workflow": False},
+    {"name": "Sequencing Runs",    "file": "xavier_template_sequencing_runs.csv",
+     "desc": "Register sequencing flowcells.",
+     "entities": ["sequencing_runs"], "workflow": False},
+    {"name": "Flowcell Libraries", "file": "xavier_template_flowcell_libraries.csv",
+     "desc": "Register per-lane library assignments for a sequencing run.",
+     "entities": ["flowcell_libraries"], "workflow": False},
+    {"name": "Files",              "file": "xavier_template_files.csv",
+     "desc": "Register output files (FASTQ, BAM, count matrices).",
+     "entities": ["files"], "workflow": False},
+    {"name": "Cohorts",            "file": "xavier_template_cohorts.csv",
+     "desc": "Register sample groupings (biological, technical, analysis).",
+     "entities": ["cohorts"], "workflow": False},
+    {"name": "Cohort Members",     "file": "xavier_template_cohort_members.csv",
+     "desc": "Link samples to an existing cohort.",
+     "entities": ["cohort_members"], "workflow": False},
+    {"name": "Pools",              "file": "xavier_template_pools.csv",
+     "desc": "Register library pool groups.",
+     "entities": ["pools"], "workflow": False},
+    {"name": "Pool Members",       "file": "xavier_template_pool_members.csv",
+     "desc": "Link experiments to an existing pool.",
+     "entities": ["pool_members"], "workflow": False},
+    # ── Multi-step workflows ───────────────────────────────────────────────
+    {"name": "Projects + Samples",
+     "file": "xavier_template_wf_projects_samples.csv",
+     "desc": "Onboard a new project with its first samples.",
+     "entities": ["projects", "samples"], "workflow": True,
+     "steps": ["1. Upload as Projects", "2. Upload as Samples"]},
+    {"name": "Subjects + Samples + Sample Sources",
+     "file": "xavier_template_wf_subjects_samples_sources.csv",
+     "desc": "Register subjects, their samples, and subject–sample links together.",
+     "entities": ["subjects", "samples", "sample_sources"], "workflow": True,
+     "steps": ["1. Upload as Subjects", "2. Upload as Samples", "3. Upload as Sample Sources"]},
+    {"name": "Samples + Experiments",
+     "file": "xavier_template_wf_samples_experiments.csv",
+     "desc": "Register samples and their library preparations in one sheet.",
+     "entities": ["samples", "experiments"], "workflow": True,
+     "steps": ["1. Upload as Samples", "2. Upload as Experiments"]},
+    {"name": "Sequencing Run + Flowcell Libraries",
+     "file": "xavier_template_wf_run_libraries.csv",
+     "desc": "Register a flowcell with all per-lane library assignments.",
+     "entities": ["sequencing_runs", "flowcell_libraries"], "workflow": True,
+     "steps": ["1. Upload as Sequencing Runs", "2. Upload as Flowcell Libraries"]},
+    {"name": "Full Prep Manifest",
+     "file": "xavier_template_wf_full_prep.csv",
+     "desc": "Projects → Samples → Experiments in one planning sheet.",
+     "entities": ["projects", "samples", "experiments"], "workflow": True,
+     "steps": ["1. Upload as Projects", "2. Upload as Samples", "3. Upload as Experiments"]},
+]
+
+
+def generate_template_csv(entities):
+    """Build a CSV with required+optional columns and one example row."""
+    cols, seen = [], set()
+    for ent in entities:
+        schema = ENTITY_SCHEMAS[ent]
+        for col in schema["required"] + schema["optional"]:
+            if col not in seen:
+                cols.append(col)
+                seen.add(col)
+    example = {col: EXAMPLE_VALUES.get(col, "") for col in cols}
+    return pd.DataFrame([example]).to_csv(index=False).encode("utf-8")
+
+
 st.title("📥 Ingest Data")
 
-tab1, tab2 = st.tabs(["Upload CSV", "Manual Entry"])
+tab1, tab2, tab3 = st.tabs(["Upload CSV", "Manual Entry", "Templates"])
 
 # ── Helper functions ──────────────────────────────────────────────────────────
 
@@ -258,3 +372,102 @@ with tab2:
         if errors:
             st.error("Some rows failed")
             st.json(errors)
+
+
+# ── Templates ─────────────────────────────────────────────────────────────────
+
+with tab3:
+    st.subheader("Download Templates")
+    st.caption(
+        "Each template is generated from the current schema and includes one example row. "
+        "Download, fill in your data, then upload in the **Upload CSV** tab. "
+        "Multi-step templates combine columns from several entity types — "
+        "upload each section separately in the order shown."
+    )
+
+    # ── Single-entity templates ──────────────────────────────────────────────
+    st.markdown("### Single-entity templates")
+
+    single = [t for t in TEMPLATE_CATALOG if not t["workflow"]]
+    for i in range(0, len(single), 3):
+        row_tmpl = single[i : i + 3]
+        cols = st.columns(3)
+        for j, tmpl in enumerate(row_tmpl):
+            with cols[j]:
+                st.markdown(f"**{tmpl['name']}**")
+                st.caption(tmpl["desc"])
+                st.download_button(
+                    label="⬇ Download CSV",
+                    data=generate_template_csv(tmpl["entities"]),
+                    file_name=tmpl["file"],
+                    mime="text/csv",
+                    key=f"dl_{tmpl['file']}",
+                    use_container_width=True,
+                )
+
+    st.divider()
+
+    # ── Workflow templates ───────────────────────────────────────────────────
+    st.markdown("### Multi-step workflow templates")
+    st.caption(
+        "Fill the full sheet end-to-end, then split and upload each section "
+        "as its own entity type in the order listed."
+    )
+
+    for tmpl in [t for t in TEMPLATE_CATALOG if t["workflow"]]:
+        with st.expander(f"**{tmpl['name']}**  —  {tmpl['desc']}"):
+            c1, c2 = st.columns([2, 1])
+            with c1:
+                st.markdown("**Entities covered (in upload order):**")
+                for step in tmpl.get("steps", []):
+                    st.markdown(f"- {step}")
+                entity_labels = " → ".join(
+                    ENTITY_SCHEMAS[e]["label"] for e in tmpl["entities"]
+                )
+                st.caption(f"Schema: {entity_labels}")
+            with c2:
+                st.download_button(
+                    label="⬇ Download CSV",
+                    data=generate_template_csv(tmpl["entities"]),
+                    file_name=tmpl["file"],
+                    mime="text/csv",
+                    key=f"dl_{tmpl['file']}",
+                    use_container_width=True,
+                )
+
+    # ── GCS custom templates (optional) ─────────────────────────────────────
+    try:
+        gcs_bucket = st.secrets.get("TEMPLATE_BUCKET") or os.getenv("TEMPLATE_BUCKET")
+    except Exception:
+        gcs_bucket = os.getenv("TEMPLATE_BUCKET")
+
+    if gcs_bucket:
+        st.divider()
+        st.markdown("### Custom templates")
+        st.caption(f"Hosted at `gs://{gcs_bucket}/templates/`")
+        try:
+            from google.cloud import storage as gcs_lib
+            client = gcs_lib.Client()
+            blobs  = [
+                b for b in client.bucket(gcs_bucket).list_blobs(prefix="templates/")
+                if b.name.endswith(".csv")
+            ]
+            if blobs:
+                for blob in blobs:
+                    fname = blob.name.split("/")[-1]
+                    with st.expander(fname):
+                        updated = blob.updated.strftime("%Y-%m-%d %H:%M UTC") if blob.updated else "unknown"
+                        st.caption(f"Size: {blob.size:,} bytes  |  Updated: {updated}")
+                        st.download_button(
+                            label="⬇ Download",
+                            data=blob.download_as_bytes(),
+                            file_name=fname,
+                            mime="text/csv",
+                            key=f"gcs_{fname}",
+                        )
+            else:
+                st.info("No custom templates found in this bucket yet.")
+        except ImportError:
+            st.warning("google-cloud-storage is not installed — custom GCS templates unavailable.")
+        except Exception as e:
+            st.warning(f"Could not load custom templates from GCS: {e}")
