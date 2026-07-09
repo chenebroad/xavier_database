@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from models.cohorts import CohortCreate
+from models import CohortCreate
 import psycopg2.extras
 import json
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from models.flowcell_libraries import SeqExpCreate
+from models import FlowcellLibraryCreate
 import psycopg2.extras
 import json
 
@@ -31,7 +31,7 @@ def get_flowcell_libraries(cur=Depends(get_db)):
 
 ## POST flowcell_libraries
 @router.post("/flowcell_libraries")
-def add_flowcell_library(seq_exp: SeqExpCreate, cur=Depends(get_db)):
+def add_flowcell_library(lib: FlowcellLibraryCreate, cur=Depends(get_db)):
     # Resolve experiment natural key
     cur.execute("""
         SELECT e.id
@@ -40,42 +40,42 @@ def add_flowcell_library(seq_exp: SeqExpCreate, cur=Depends(get_db)):
         WHERE s.sample_name = %s
           AND e.assay_type = %s
           AND e.library_prep_date = %s
-    """, (seq_exp.sample_name, seq_exp.assay_type, seq_exp.library_prep_date))
+    """, (lib.sample_name, lib.assay_type, lib.library_prep_date))
 
     row = cur.fetchone()
     if not row:
         raise HTTPException(404,
-            f"Experiment not found for sample '{seq_exp.sample_name}', "
-            f"assay '{seq_exp.assay_type}', date '{seq_exp.library_prep_date}'"
+            f"Experiment not found for sample '{lib.sample_name}', "
+            f"assay '{lib.assay_type}', date '{lib.library_prep_date}'"
         )
     experiment_id = row["id"]
 
     # Resolve flowcell natural key
     cur.execute("""
         SELECT id FROM sequencing_runs WHERE flowcell_id = %s
-    """, (seq_exp.flowcell_id,))
+    """, (lib.flowcell_id,))
 
     row = cur.fetchone()
     if not row:
-        raise HTTPException(404, f"Sequencing run '{seq_exp.flowcell_id}' not found")
+        raise HTTPException(404, f"Sequencing run '{lib.flowcell_id}' not found")
     run_id = row["id"]
 
     # Guard duplicate
     cur.execute("""
         SELECT 1 FROM flowcell_libraries
         WHERE experiment_id = %s AND run_id = %s AND lane = %s
-    """, (experiment_id, run_id, seq_exp.lane))
+    """, (experiment_id, run_id, lib.lane))
     if cur.fetchone():
         raise HTTPException(409,
-            f"Library already assigned to flowcell '{seq_exp.flowcell_id}' lane '{seq_exp.lane}'"
+            f"Library already assigned to flowcell '{lib.flowcell_id}' lane '{lib.lane}'"
         )
 
     cur.execute("""
         INSERT INTO flowcell_libraries (experiment_id, run_id, lane, index_sequence, extra_metadata)
         VALUES (%s, %s, %s, %s, %s)
         RETURNING *
-    """, (experiment_id, run_id, seq_exp.lane, seq_exp.index_sequence,
-          psycopg2.extras.Json(seq_exp.extra_metadata)))
+    """, (experiment_id, run_id, lib.lane, lib.index_sequence,
+          psycopg2.extras.Json(lib.extra_metadata)))
 
     return cur.fetchone()
 
