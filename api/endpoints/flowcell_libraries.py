@@ -32,21 +32,23 @@ def get_flowcell_libraries(cur=Depends(get_db)):
 ## POST flowcell_libraries
 @router.post("/flowcell_libraries")
 def add_flowcell_library(lib: FlowcellLibraryCreate, cur=Depends(get_db)):
-    # Resolve experiment natural key
+    # Resolve experiment natural key, scoped to project
     cur.execute("""
         SELECT e.id
         FROM experiments e
-        JOIN samples s ON e.sample_id = s.id
+        JOIN samples s  ON e.sample_id = s.id
+        JOIN projects p ON s.project_id = p.id
         WHERE s.sample_name = %s
+          AND p.project_name = %s
           AND e.assay_type = %s
           AND e.library_prep_date = %s
-    """, (lib.sample_name, lib.assay_type, lib.library_prep_date))
+    """, (lib.sample_name, lib.project_name, lib.assay_type, lib.library_prep_date))
 
     row = cur.fetchone()
     if not row:
         raise HTTPException(404,
-            f"Experiment not found for sample '{lib.sample_name}', "
-            f"assay '{lib.assay_type}', date '{lib.library_prep_date}'"
+            f"Experiment not found for sample '{lib.sample_name}' in project "
+            f"'{lib.project_name}', assay '{lib.assay_type}', date '{lib.library_prep_date}'"
         )
     experiment_id = row["id"]
 

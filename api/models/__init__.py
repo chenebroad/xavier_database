@@ -41,6 +41,7 @@ class SampleCreate(BaseModel):
 
 
 class SampleSourceCreate(BaseModel):
+    project_name: str
     sample_name: str
     pub_id: str
     freezerworks_id: str  # resolves to subject_id via pub_id + freezerworks_id
@@ -60,10 +61,12 @@ class CohortCreate(BaseModel):
 
 class CohortMembersCreate(BaseModel):
     cohort_name: str
+    project_name: str
     sample_name: str
 
 
 class ExperimentCreate(BaseModel):
+    project_name: str
     sample_name: str
     assay_type: str
     library_prep_date: str
@@ -90,6 +93,7 @@ class PoolCreate(BaseModel):
 
 class PoolMembersCreate(BaseModel):
     pool_name: str
+    project_name: str
     sample_name: str
     assay_type: str
     library_prep_date: str  # expects YYYY-MM-DD
@@ -111,6 +115,7 @@ class SequencingCreate(BaseModel):
 
 
 class FlowcellLibraryCreate(BaseModel):
+    project_name: str
     sample_name: str
     assay_type: str
     library_prep_date: str
@@ -127,6 +132,7 @@ class FlowcellLibraryCreate(BaseModel):
 
 class FileCreate(BaseModel):
     # Natural keys used to resolve flowcell_library_id
+    project_name: str
     sample_name: str
     assay_type: str
     library_prep_date: str

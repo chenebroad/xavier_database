@@ -24,19 +24,22 @@ def add_files(files: FileCreate, cur=Depends(get_db)):
     logger.info(f"METHOD: POST /files")
     logger.info(f"PAYLOAD: {files.model_dump()}")
 
-    # Resolve natural keys to flowcell_library_id
+    # Resolve natural keys to flowcell_library_id, scoped to project
     cur.execute("""
         SELECT fl.id AS flowcell_library_id
         FROM flowcell_libraries fl
         JOIN experiments e      ON fl.experiment_id = e.id
         JOIN samples s          ON e.sample_id = s.id
+        JOIN projects p         ON s.project_id = p.id
         JOIN sequencing_runs sq ON fl.run_id = sq.id
         WHERE s.sample_name       = %s
+          AND p.project_name      = %s
           AND e.assay_type        = %s
           AND e.library_prep_date = %s
           AND sq.flowcell_id      = %s
     """, (
         files.sample_name,
+        files.project_name,
         files.assay_type,
         files.library_prep_date,
         files.flowcell_id

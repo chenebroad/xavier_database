@@ -116,7 +116,7 @@ ENTITY_SCHEMAS = {
         "color":       "#a78bfa",
         "colorBg":     "#110e2a",
         "desc":        "Junction. Links subjects to samples. Pooled samples have one row per contributing subject.",
-        "required":    ["sample_name", "pub_id", "freezerworks_id"],
+        "required":    ["project_name", "sample_name", "pub_id", "freezerworks_id"],
         "optional":    [],
         "system":      ["sample_id", "subject_id", "added_at"],
         "relations":   ["samples", "subjects"],
@@ -141,7 +141,7 @@ ENTITY_SCHEMAS = {
         "color":       "#fbbf24",
         "colorBg":     "#1c1504",
         "desc":        "Junction. Links samples to cohorts. Many-to-many.",
-        "required":    ["cohort_name", "sample_name"],
+        "required":    ["cohort_name", "project_name", "sample_name"],
         "optional":    [],
         "system":      ["cohort_id", "sample_id", "added_at"],
         "relations":   ["cohorts", "samples"],
@@ -154,7 +154,7 @@ ENTITY_SCHEMAS = {
         "color":    "#4ade80",
         "colorBg":  "#0a1f10",
         "desc":     "A library preparation or assay performed on a sample.",
-        "required": ["sample_name", "assay_type", "library_prep_date"],
+        "required": ["project_name", "sample_name", "assay_type", "library_prep_date"],
         "optional": ["library_protocol", "library_version"],
         "system":   ["id", "sample_id", "created_at", "updated_at", "extra_metadata"],
         "relations": ["samples", "flowcell_libraries", "pool_members"],
@@ -178,7 +178,7 @@ ENTITY_SCHEMAS = {
         "color":       "#fb7185",
         "colorBg":     "#1a080c",
         "desc":        "Junction. Links experiments to pools.",
-        "required":    ["pool_name", "sample_name", "assay_type", "library_prep_date"],
+        "required":    ["pool_name", "project_name", "sample_name", "assay_type", "library_prep_date"],
         "optional":    [],
         "system":      ["pool_id", "experiment_id", "added_at"],
         "relations":   ["pools", "experiments"],
@@ -203,7 +203,7 @@ ENTITY_SCHEMAS = {
         "color":    "#94a3b8",
         "colorBg":  "#141920",
         "desc":     "Pre-registers lane and index assignments for each experiment on a sequencing run.",
-        "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id", "lane", "index_sequence"],
+        "required": ["project_name", "sample_name", "assay_type", "library_prep_date", "flowcell_id", "lane", "index_sequence"],
         "optional": [],
         "system":   ["id", "experiment_id", "run_id", "created_at", "updated_at", "extra_metadata"],
         "relations": ["experiments", "sequencing_runs", "files"],
@@ -215,7 +215,7 @@ ENTITY_SCHEMAS = {
         "color":    "#94a3b8",
         "colorBg":  "#141920",
         "desc":     "Physical outputs — FASTQ, BAM, count matrices. Stored in GCS or cluster paths.",
-        "required": ["sample_name", "assay_type", "library_prep_date", "flowcell_id", "file_type"],
+        "required": ["project_name", "sample_name", "assay_type", "library_prep_date", "flowcell_id", "file_type"],
         "optional": ["gcs_uri", "gcs_bucket", "file_path", "file_format", "subject_id"],
         "system":   ["id", "flowcell_library_id", "created_at", "updated_at", "extra_metadata"],
         "relations": ["flowcell_libraries"],
@@ -223,6 +223,30 @@ ENTITY_SCHEMAS = {
     },
 
 }
+
+# ── Controlled vocabularies ───────────────────────────────────────────────────
+# Used for XLSX dropdown validation and server-side CSV validation.
+# Add new values here as the lab adopts new assay types, tissues, etc.
+VOCABULARIES = {
+    "assay_type": [
+        "scRNA-seq", "snRNA-seq", "ATAC-seq", "scATAC-seq",
+        "Multiome", "WGS", "WES", "ChIP-seq", "CUT&RUN", "CUT&TAG",
+        "bulk RNA-seq", "spatial transcriptomics",
+    ],
+    "organism": [
+        "Homo sapiens", "Mus musculus", "Rattus norvegicus",
+    ],
+    "tissue": [
+        "PBMC", "colon", "ileum", "jejunum", "duodenum", "rectum",
+        "skin", "liver", "lung", "kidney", "bone marrow",
+        "adipose", "muscle", "brain", "heart", "spleen", "lymph node",
+    ],
+    "sample_type": ["individual", "pooled"],
+    "cohort_type": ["biological", "technical", "analysis"],
+    "file_type":   ["fastq", "bam", "cram", "h5ad", "count_matrix", "vcf", "bed", "bigwig"],
+    "file_format": ["fastq.gz", "bam", "cram", "h5ad", "csv", "tsv", "vcf.gz", "bed.gz", "bw"],
+}
+
 
 EDGES = [
     ("projects",          "samples"),

@@ -36,15 +36,17 @@ def add_pool_member(member: PoolMembersCreate, cur=Depends(get_db)):
     if not pool:
         raise HTTPException(404, f"Pool '{member.pool_name}' not found")
 
-    # Resolve sample_name + assay_type + library_prep_date → experiment_id
+    # Resolve sample_name + assay_type + library_prep_date → experiment_id, scoped to project
     cur.execute("""
         SELECT e.id
         FROM experiments e
-        JOIN samples s ON e.sample_id = s.id
+        JOIN samples s  ON e.sample_id = s.id
+        JOIN projects p ON s.project_id = p.id
         WHERE s.sample_name = %s
+          AND p.project_name = %s
           AND e.assay_type = %s
           AND e.library_prep_date = %s
-    """, (member.sample_name, member.assay_type, member.library_prep_date))
+    """, (member.sample_name, member.project_name, member.assay_type, member.library_prep_date))
     experiment = cur.fetchone()
     if not experiment:
         raise HTTPException(404,
@@ -75,6 +77,7 @@ def add_pool_member(member: PoolMembersCreate, cur=Depends(get_db)):
 @router.delete("/pool_members")
 def remove_pool_member(
     pool_name: str,
+    project_name: str,
     sample_name: str,
     assay_type: str,
     library_prep_date: str,
@@ -88,13 +91,15 @@ def remove_pool_member(
         AND experiment_id = (
             SELECT e.id
             FROM experiments e
-            JOIN samples s ON e.sample_id = s.id
+            JOIN samples s  ON e.sample_id = s.id
+            JOIN projects p ON s.project_id = p.id
             WHERE s.sample_name = %s
+              AND p.project_name = %s
               AND e.assay_type = %s
               AND e.library_prep_date = %s
         )
         RETURNING *
-    """, (pool_name, sample_name, assay_type, library_prep_date))
+    """, (pool_name, sample_name, project_name, assay_type, library_prep_date))
 
     if not cur.fetchone():
         raise HTTPException(404, "Membership not found")

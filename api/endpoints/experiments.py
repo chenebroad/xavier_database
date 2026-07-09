@@ -30,15 +30,22 @@ def update_experiment(experiment_id: str, payload: dict, cur = Depends(get_db)):
     if not payload:
         raise HTTPException(400, "No valid fields to update")
 
-    # Resolve natural key: sample_name -> sample_id
+    # Resolve natural key: sample_name -> sample_id, scoped to project
     if "sample_name" in payload:
-        cur.execute("SELECT id FROM samples WHERE sample_name = %s", (payload["sample_name"],))
+        if "project_name" not in payload:
+            raise HTTPException(400, "project_name is required when updating sample_name")
+        cur.execute("""
+            SELECT s.id FROM samples s
+            JOIN projects p ON s.project_id = p.id
+            WHERE s.sample_name = %s AND p.project_name = %s
+        """, (payload["sample_name"], payload["project_name"]))
         result = cur.fetchone()
         if not result:
-            raise HTTPException(400, f"sample_name '{payload['sample_name']}' does not exist")
-
+            raise HTTPException(400,
+                f"Sample '{payload['sample_name']}' not found in project '{payload['project_name']}'"
+            )
         payload["sample_id"] = result["id"]
-        del payload["sample_name"]
+        del payload["sample_name"], payload["project_name"]
 
     # Serialize extra_metadata if present
     if "extra_metadata" in payload and payload["extra_metadata"] is not None:
@@ -68,11 +75,17 @@ def update_experiment(experiment_id: str, payload: dict, cur = Depends(get_db)):
 
 @router.post("/experiments")
 def add_experiment(experiment: ExperimentCreate, cur=Depends(get_db)):
-    # Lookup sample_id by natural key
-    cur.execute("SELECT id FROM samples WHERE sample_name = %s", (experiment.sample_name,))
+    # Resolve sample_name → sample_id, scoped to project
+    cur.execute("""
+        SELECT s.id FROM samples s
+        JOIN projects p ON s.project_id = p.id
+        WHERE s.sample_name = %s AND p.project_name = %s
+    """, (experiment.sample_name, experiment.project_name))
     sample_row = cur.fetchone()
     if not sample_row:
-        raise HTTPException(status_code=404, detail=f"Sample '{experiment.sample_name}' not found")
+        raise HTTPException(404,
+            f"Sample '{experiment.sample_name}' not found in project '{experiment.project_name}'"
+        )
     sample_id = sample_row["id"]
 
     cur.execute("""

@@ -5,7 +5,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from schema import ENTITY_SCHEMAS
+from schema import ENTITY_SCHEMAS, VOCABULARIES
 from api_client import (
     create_project, create_sample, create_experiment,
     create_run, create_flowcell_library, create_file,
@@ -130,17 +130,85 @@ TEMPLATE_CATALOG = [
 ]
 
 
-def generate_template_csv(entities):
-    """Build a CSV with required+optional columns and one example row."""
+def _template_columns(entities):
+    """Return deduplicated ordered column list for the given entities."""
     cols, seen = [], set()
     for ent in entities:
         schema = ENTITY_SCHEMAS[ent]
-        for col in schema["required"] + schema["optional"]:
+        required = schema["required"]
+        optional = schema["optional"]
+        for col in required + optional:
             if col not in seen:
-                cols.append(col)
+                cols.append((col, col in required))
                 seen.add(col)
+    return cols  # list of (col_name, is_required)
+
+
+def generate_template_csv(entities):
+    """CSV template with one example row."""
+    cols = [c for c, _ in _template_columns(entities)]
     example = {col: EXAMPLE_VALUES.get(col, "") for col in cols}
     return pd.DataFrame([example]).to_csv(index=False).encode("utf-8")
+
+
+def generate_template_xlsx(entities):
+    """XLSX template with styled headers, one example row, and dropdown validation."""
+    try:
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment
+        from openpyxl.worksheet.datavalidation import DataValidation
+        from openpyxl.utils import get_column_letter
+        from io import BytesIO
+    except ImportError:
+        return None  # caller falls back to CSV
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Template"
+
+    cols = _template_columns(entities)
+
+    FILL_REQUIRED = PatternFill("solid", fgColor="D6E4F7")  # light blue
+    FILL_OPTIONAL = PatternFill("solid", fgColor="F0F0F0")  # light grey
+    FILL_EXAMPLE  = PatternFill("solid", fgColor="EAF7EA")  # light green
+
+    for i, (col, is_required) in enumerate(cols, start=1):
+        letter = get_column_letter(i)
+
+        # Header cell
+        hdr = ws.cell(row=1, column=i, value=col)
+        hdr.font      = Font(bold=True, size=11)
+        hdr.fill      = FILL_REQUIRED if is_required else FILL_OPTIONAL
+        hdr.alignment = Alignment(horizontal="center")
+
+        # Example cell
+        ex = ws.cell(row=2, column=i, value=EXAMPLE_VALUES.get(col, ""))
+        ex.fill      = FILL_EXAMPLE
+        ex.font      = Font(italic=True, color="666666")
+
+        # Column width
+        ws.column_dimensions[letter].width = max(len(col) + 4, 16)
+
+        # Dropdown validation for vocabulary fields
+        if col in VOCABULARIES:
+            options = ",".join(VOCABULARIES[col])
+            dv = DataValidation(
+                type="list",
+                formula1=f'"{options}"',
+                allow_blank=True,
+                showErrorMessage=True,
+                errorTitle="Invalid value",
+                error=f"Choose from: {options}",
+            )
+            ws.add_data_validation(dv)
+            dv.sqref = f"{letter}3:{letter}5000"
+
+    # Freeze header row
+    ws.freeze_panes = "A3"
+
+    buf = BytesIO()
+    wb.save(buf)
+    return buf.getvalue()
 
 
 st.title("📥 Ingest Data")
@@ -231,10 +299,13 @@ with tab1:
     schema_helper(entity)
     st.divider()
 
-    uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+    uploaded_file = st.file_uploader("Upload CSV or XLSX", type=["csv", "xlsx"])
 
     if uploaded_file:
-        df = pd.read_csv(uploaded_file)
+        if uploaded_file.name.endswith(".xlsx"):
+            df = pd.read_excel(uploaded_file, dtype=str).fillna("")
+        else:
+            df = pd.read_csv(uploaded_file, dtype=str).fillna("")
 
         st.write("Preview:")
         st.dataframe(df)
@@ -396,14 +467,26 @@ with tab3:
             with cols[j]:
                 st.markdown(f"**{tmpl['name']}**")
                 st.caption(tmpl["desc"])
-                st.download_button(
-                    label="⬇ Download CSV",
-                    data=generate_template_csv(tmpl["entities"]),
-                    file_name=tmpl["file"],
-                    mime="text/csv",
-                    key=f"dl_{tmpl['file']}",
-                    use_container_width=True,
-                )
+                xlsx_bytes = generate_template_xlsx(tmpl["entities"])
+                bc1, bc2 = st.columns(2)
+                with bc1:
+                    st.download_button(
+                        label="⬇ XLSX",
+                        data=xlsx_bytes or generate_template_csv(tmpl["entities"]),
+                        file_name=tmpl["file"].replace(".csv", ".xlsx") if xlsx_bytes else tmpl["file"],
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" if xlsx_bytes else "text/csv",
+                        key=f"dlx_{tmpl['file']}",
+                        use_container_width=True,
+                    )
+                with bc2:
+                    st.download_button(
+                        label="⬇ CSV",
+                        data=generate_template_csv(tmpl["entities"]),
+                        file_name=tmpl["file"],
+                        mime="text/csv",
+                        key=f"dlc_{tmpl['file']}",
+                        use_container_width=True,
+                    )
 
     st.divider()
 
@@ -426,12 +509,21 @@ with tab3:
                 )
                 st.caption(f"Schema: {entity_labels}")
             with c2:
+                xlsx_bytes = generate_template_xlsx(tmpl["entities"])
                 st.download_button(
-                    label="⬇ Download CSV",
+                    label="⬇ XLSX",
+                    data=xlsx_bytes or generate_template_csv(tmpl["entities"]),
+                    file_name=tmpl["file"].replace(".csv", ".xlsx") if xlsx_bytes else tmpl["file"],
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" if xlsx_bytes else "text/csv",
+                    key=f"dlx_{tmpl['file']}",
+                    use_container_width=True,
+                )
+                st.download_button(
+                    label="⬇ CSV",
                     data=generate_template_csv(tmpl["entities"]),
                     file_name=tmpl["file"],
                     mime="text/csv",
-                    key=f"dl_{tmpl['file']}",
+                    key=f"dlc_{tmpl['file']}",
                     use_container_width=True,
                 )
 

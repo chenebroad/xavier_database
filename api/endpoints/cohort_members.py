@@ -27,11 +27,17 @@ def add_cohort_member(member: CohortMembersCreate, cur = Depends(get_db)):
     if not cohort:
         raise HTTPException(404, f"Cohort '{member.cohort_name}' not found")
 
-    # Resolve sample_name → sample_id
-    cur.execute("SELECT id FROM samples WHERE sample_name = %s", (member.sample_name,))
+    # Resolve sample_name → sample_id, scoped to project
+    cur.execute("""
+        SELECT s.id FROM samples s
+        JOIN projects p ON s.project_id = p.id
+        WHERE s.sample_name = %s AND p.project_name = %s
+    """, (member.sample_name, member.project_name))
     sample = cur.fetchone()
     if not sample:
-        raise HTTPException(404, f"Sample '{member.sample_name}' not found")
+        raise HTTPException(404,
+            f"Sample '{member.sample_name}' not found in project '{member.project_name}'"
+        )
 
     # Guard against duplicate membership
     cur.execute("""
@@ -50,13 +56,17 @@ def add_cohort_member(member: CohortMembersCreate, cur = Depends(get_db)):
     return cur.fetchone()
 
 @router.delete("/cohort_members")
-def remove_cohort_member(cohort_name: str, sample_name: str, cur=Depends(get_db)):
+def remove_cohort_member(cohort_name: str, project_name: str, sample_name: str, cur=Depends(get_db)):
     cur.execute("""
         DELETE FROM cohort_members
         WHERE cohort_id = (SELECT id FROM cohorts WHERE cohort_name = %s)
-        AND sample_id = (SELECT id FROM samples WHERE sample_name = %s)
+        AND sample_id = (
+            SELECT s.id FROM samples s
+            JOIN projects p ON s.project_id = p.id
+            WHERE s.sample_name = %s AND p.project_name = %s
+        )
         RETURNING *
-    """, (cohort_name, sample_name))
+    """, (cohort_name, sample_name, project_name))
 
     if not cur.fetchone():
         raise HTTPException(404, "Membership not found")

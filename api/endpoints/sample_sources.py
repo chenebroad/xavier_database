@@ -16,13 +16,17 @@ def get_sample_sources(cur=Depends(get_db)):
 
 @router.post("/sample_sources")
 def add_sample_source(source: SampleSourceCreate, cur=Depends(get_db)):
-    # Resolve sample_name → sample_id
+    # Resolve sample_name → sample_id, scoped to project
     cur.execute("""
-        SELECT id FROM samples WHERE sample_name = %s
-    """, (source.sample_name,))
+        SELECT s.id FROM samples s
+        JOIN projects p ON s.project_id = p.id
+        WHERE s.sample_name = %s AND p.project_name = %s
+    """, (source.sample_name, source.project_name))
     sample = cur.fetchone()
     if not sample:
-        raise HTTPException(404, f"Sample '{source.sample_name}' not found")
+        raise HTTPException(404,
+            f"Sample '{source.sample_name}' not found in project '{source.project_name}'"
+        )
 
     # Resolve subject_pub_id → subject_id
     cur.execute("""
@@ -53,17 +57,19 @@ def add_sample_source(source: SampleSourceCreate, cur=Depends(get_db)):
 
 
 @router.delete("/sample_sources")
-def remove_sample_source(sample_name: str, subject_pub_id: str, cur=Depends(get_db)):
+def remove_sample_source(project_name: str, sample_name: str, subject_pub_id: str, cur=Depends(get_db)):
     cur.execute("""
         DELETE FROM sample_sources
         WHERE sample_id = (
-            SELECT id FROM samples WHERE sample_name = %s
+            SELECT s.id FROM samples s
+            JOIN projects p ON s.project_id = p.id
+            WHERE s.sample_name = %s AND p.project_name = %s
         )
         AND subject_id = (
             SELECT id FROM subjects WHERE pub_id = %s
         )
         RETURNING *
-    """, (sample_name, subject_pub_id))
+    """, (sample_name, project_name, subject_pub_id))
 
     if not cur.fetchone():
         raise HTTPException(404, "Sample source link not found")
