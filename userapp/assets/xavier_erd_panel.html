@@ -800,7 +800,7 @@ Object.entries(POS).forEach(([key, pos]) => {
   sub.setAttribute('font-family', 'JetBrains Mono, Fira Code, monospace');
   sub.setAttribute('font-size', '9');
   sub.textContent = isJunction
-    ? '(junction)'
+    ? `(junction · ${t.required.length} required)`
     : `${t.required.length} required · ${t.optional.length} optional`;
 
   g.appendChild(rect);
