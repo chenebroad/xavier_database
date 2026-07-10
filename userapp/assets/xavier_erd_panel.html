@@ -385,6 +385,7 @@ const TABLES = {
     "colorBg": "#110e2a",
     "desc": "Junction. Links subjects to samples. Pooled samples have one row per contributing subject.",
     "required": [
+      "project_name",
       "sample_name",
       "pub_id",
       "freezerworks_id"
@@ -430,6 +431,7 @@ const TABLES = {
     "desc": "Junction. Links samples to cohorts. Many-to-many.",
     "required": [
       "cohort_name",
+      "project_name",
       "sample_name"
     ],
     "optional": [],
@@ -450,6 +452,7 @@ const TABLES = {
     "colorBg": "#0a1f10",
     "desc": "A library preparation or assay performed on a sample.",
     "required": [
+      "project_name",
       "sample_name",
       "assay_type",
       "library_prep_date"
@@ -499,6 +502,7 @@ const TABLES = {
     "desc": "Junction. Links experiments to pools.",
     "required": [
       "pool_name",
+      "project_name",
       "sample_name",
       "assay_type",
       "library_prep_date"
@@ -545,6 +549,7 @@ const TABLES = {
     "colorBg": "#141920",
     "desc": "Pre-registers lane and index assignments for each experiment on a sequencing run.",
     "required": [
+      "project_name",
       "sample_name",
       "assay_type",
       "library_prep_date",
@@ -573,6 +578,7 @@ const TABLES = {
     "colorBg": "#141920",
     "desc": "Physical outputs \u2014 FASTQ, BAM, count matrices. Stored in GCS or cluster paths.",
     "required": [
+      "project_name",
       "sample_name",
       "assay_type",
       "library_prep_date",

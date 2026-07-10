@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from endpoints import (samples, projects, experiments,
 cohorts, cohort_members, pools, pool_members,
 subjects, sample_sources, sequencing_runs,
-flowcell_libraries, files, query, quick_query, dashboard, sql)
+flowcell_libraries, files, query, quick_query, dashboard, sql,
+metadata_registry)
 
 app = FastAPI(title="Xavier Database API")
 
@@ -26,6 +27,7 @@ app.include_router(query.router)
 app.include_router(quick_query.router)
 app.include_router(dashboard.router)
 app.include_router(sql.router)
+app.include_router(metadata_registry.router)
 
 @app.get("/")
 def root():

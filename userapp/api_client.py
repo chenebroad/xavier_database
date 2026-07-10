@@ -130,6 +130,29 @@ def create_flowcell_library(payload): return post_with_debug("flowcell_libraries
 def create_file(payload):             return post_with_debug("files", payload)
 
 # -------------------------
+# Metadata registry
+# -------------------------
+def get_metadata_registry(entity_type=None):
+    params = {"entity_type": entity_type} if entity_type else {}
+    res = requests.get(f"{BASE_URL}/metadata_registry", params=params, timeout=5)
+    if res.status_code != 200:
+        raise Exception(res.text)
+    return res.json()
+
+def create_registry_entry(payload):
+    return post_with_debug("metadata_registry", payload)
+
+def deprecate_registry_entry(registry_id, description=None):
+    payload = {"deprecated": True}
+    if description:
+        payload["description"] = description
+    res = requests.patch(f"{BASE_URL}/metadata_registry/{registry_id}", json=payload)
+    if res.status_code != 200:
+        raise Exception(res.text)
+    return res.json()
+
+
+# -------------------------
 # Delete
 # -------------------------
 def delete_project(row_id):          return delete_with_debug("projects", row_id)

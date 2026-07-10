@@ -22,7 +22,7 @@ class SubjectCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("subject", values.get("extra_metadata", {}))
+        validate_extra_metadata("subjects", values.get("extra_metadata", {}))
         return values
 
 
@@ -55,7 +55,7 @@ class CohortCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("cohort", values.get("extra_metadata", {}))
+        validate_extra_metadata("cohorts", values.get("extra_metadata", {}))
         return values
 
 
@@ -76,7 +76,7 @@ class ExperimentCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("experiment", values.get("extra_metadata", {}))
+        validate_extra_metadata("experiments", values.get("extra_metadata", {}))
         return values
 
 
@@ -87,7 +87,7 @@ class PoolCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("pool", values.get("extra_metadata", {}))
+        validate_extra_metadata("pools", values.get("extra_metadata", {}))
         return values
 
 
@@ -110,7 +110,7 @@ class SequencingCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("sequencing_run", values.get("extra_metadata", {}))
+        validate_extra_metadata("sequencing_runs", values.get("extra_metadata", {}))
         return values
 
 
@@ -126,7 +126,7 @@ class FlowcellLibraryCreate(BaseModel):
 
     @model_validator(mode="before")
     def check_extra_metadata(cls, values):
-        validate_extra_metadata("experiment", values.get("extra_metadata", {}))
+        validate_extra_metadata("flowcell_libraries", values.get("extra_metadata", {}))
         return values
 
 
@@ -155,3 +155,12 @@ class FileCreate(BaseModel):
     def check_extra_metadata(cls, values):
         validate_extra_metadata("files", values.get("extra_metadata", {}))
         return values
+
+
+class MetadataRegistryCreate(BaseModel):
+    entity_type: str           # must match a table name: samples, experiments, etc.
+    field_name: str
+    data_type: str             # text, integer, float, boolean, enum
+    required: bool = False
+    allowed_values: Optional[list] = None   # populated when data_type = 'enum'
+    description: Optional[str] = None

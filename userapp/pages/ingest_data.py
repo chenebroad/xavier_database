@@ -535,31 +535,100 @@ with tab3:
 
     if gcs_bucket:
         st.divider()
-        st.markdown("### Custom templates")
-        st.caption(f"Hosted at `gs://{gcs_bucket}/templates/`")
+        st.markdown("### Group templates")
+        st.caption(
+            "Templates uploaded by lab groups, organized by group name. "
+            "These can include extra_metadata columns specific to your group's workflow."
+        )
+
         try:
             from google.cloud import storage as gcs_lib
+            import datetime
+
             client = gcs_lib.Client()
-            blobs  = [
-                b for b in client.bucket(gcs_bucket).list_blobs(prefix="templates/")
-                if b.name.endswith(".csv")
-            ]
-            if blobs:
-                for blob in blobs:
-                    fname = blob.name.split("/")[-1]
-                    with st.expander(fname):
-                        updated = blob.updated.strftime("%Y-%m-%d %H:%M UTC") if blob.updated else "unknown"
-                        st.caption(f"Size: {blob.size:,} bytes  |  Updated: {updated}")
-                        st.download_button(
-                            label="⬇ Download",
-                            data=blob.download_as_bytes(),
-                            file_name=fname,
-                            mime="text/csv",
-                            key=f"gcs_{fname}",
+            bucket = client.bucket(gcs_bucket)
+
+            # ── Upload form ──────────────────────────────────────────────────
+            with st.expander("Upload a template", icon="📤"):
+                with st.form("upload_template"):
+                    group_name   = st.text_input(
+                        "Group name",
+                        placeholder="e.g. GI, Dermatology, Shared"
+                    )
+                    tmpl_desc    = st.text_input(
+                        "Description",
+                        placeholder="What is this template for?"
+                    )
+                    upload_file  = st.file_uploader(
+                        "Template file", type=["csv", "xlsx"]
+                    )
+                    do_upload    = st.form_submit_button("Upload")
+
+                if do_upload:
+                    if not group_name.strip():
+                        st.error("Group name is required.")
+                    elif upload_file is None:
+                        st.error("Select a file to upload.")
+                    else:
+                        safe_group = group_name.strip().replace(" ", "_")
+                        blob_path  = f"templates/{safe_group}/{upload_file.name}"
+                        blob       = bucket.blob(blob_path)
+                        blob.metadata = {
+                            "description":  tmpl_desc.strip(),
+                            "uploaded_at":  datetime.datetime.utcnow().isoformat(),
+                        }
+                        blob.upload_from_file(upload_file, rewind=True)
+                        st.success(
+                            f"Uploaded **{upload_file.name}** to group **{safe_group}**."
                         )
+                        st.rerun()
+
+            # ── Browse by group ──────────────────────────────────────────────
+            all_blobs = [
+                b for b in bucket.list_blobs(prefix="templates/")
+                if b.name.endswith((".csv", ".xlsx"))
+            ]
+
+            if not all_blobs:
+                st.info("No group templates uploaded yet.")
             else:
-                st.info("No custom templates found in this bucket yet.")
+                # Parse group from path: templates/{group}/{filename}
+                groups = {}
+                for blob in all_blobs:
+                    parts = blob.name.split("/")
+                    if len(parts) >= 3:
+                        grp = parts[1].replace("_", " ")
+                        groups.setdefault(grp, []).append(blob)
+
+                for grp, blobs in sorted(groups.items()):
+                    st.markdown(f"**{grp}**")
+                    for blob in blobs:
+                        fname    = blob.name.split("/")[-1]
+                        meta     = blob.metadata or {}
+                        desc     = meta.get("description", "")
+                        uploaded = meta.get("uploaded_at", "")[:10] if meta.get("uploaded_at") else ""
+                        mime     = (
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            if fname.endswith(".xlsx") else "text/csv"
+                        )
+                        c1, c2 = st.columns([3, 1])
+                        with c1:
+                            st.caption(f"`{fname}`" + (f"  —  {desc}" if desc else "") +
+                                       (f"  ·  {uploaded}" if uploaded else ""))
+                        with c2:
+                            st.download_button(
+                                label="⬇ Download",
+                                data=blob.download_as_bytes(),
+                                file_name=fname,
+                                mime=mime,
+                                key=f"gcs_{blob.name}",
+                                use_container_width=True,
+                            )
+                    st.divider()
+
         except ImportError:
-            st.warning("google-cloud-storage is not installed — custom GCS templates unavailable.")
+            st.warning(
+                "google-cloud-storage is not installed — group templates unavailable."
+            )
         except Exception as e:
-            st.warning(f"Could not load custom templates from GCS: {e}")
+            st.warning(f"Could not connect to template storage: {e}")
