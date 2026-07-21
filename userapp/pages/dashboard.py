@@ -155,8 +155,8 @@ if selected:
     )
 
     # Summary line below table
-    complete   = (df["completeness"] == 4).sum()
-    incomplete = (df["completeness"] < 4).sum()
+    complete   = (df["completeness"] == 3).sum()
+    incomplete = (df["completeness"] < 3).sum()
     st.caption(
         f"{complete} fully complete · "
         f"{incomplete} incomplete · "
