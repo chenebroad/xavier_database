@@ -116,7 +116,7 @@ if selected:
 
     display_df = df[[
         "sample_name", "sample_type", "organism", "tissue",
-        "status", "assays", "subject_count", "experiment_count",
+        "assays", "subject_count", "experiment_count",
         "run_count", "file_count",
         "subjects", "experiment", "run", "files",
         "completeness"
@@ -125,7 +125,6 @@ if selected:
         "sample_type":      "Type",
         "organism":         "Organism",
         "tissue":           "Tissue",
-        "status":           "Status",
         "assays":           "Assays",
         "subject_count":    "# Subjects",
         "experiment_count": "# Experiments",
@@ -150,7 +149,6 @@ if selected:
                 format="%d / 3",
             ),
             "Type": st.column_config.TextColumn("Type"),
-            "Status": st.column_config.TextColumn("Status"),
         }
     )
 

@@ -48,7 +48,6 @@ def get_project_detail(project_name: str, cur=Depends(get_db)):
             sa.sample_type,
             sa.organism,
             sa.tissue,
-            sa.status,
             COUNT(DISTINCT ss.subject_id)       AS subject_count,
             COUNT(DISTINCT e.id)                AS experiment_count,
             COUNT(DISTINCT fl.id)               AS run_count,
