@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import sys
 import os
+import datetime
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from schema import ENTITY_SCHEMAS, VOCABULARIES
@@ -13,6 +14,50 @@ from api_client import (
     create_pool, create_pool_member, create_subject, create_sample_source
 )
 import math
+
+# ── Ingest audit trail ──────────────────────────────────────────────────────
+# Archives every successfully-submitted ingest file (or a snapshot of manual
+# entries) to GCS for posterity. Uses the same secret-configured bucket
+# pattern as the group template storage below. Failure here never blocks
+# an ingest — it's a best-effort archive, not a transactional requirement.
+
+def _get_audit_bucket():
+    try:
+        return st.secrets.get("AUDIT_BUCKET") or os.getenv("AUDIT_BUCKET")
+    except Exception:
+        return os.getenv("AUDIT_BUCKET")
+
+
+def audit_archive(entity: str, file_bytes: bytes, filename: str, row_count: int, source: str):
+    """Best-effort upload of an ingested file to the audit bucket.
+    Returns True if archived, False if skipped or failed (never raises)."""
+    bucket_name = _get_audit_bucket()
+    if not bucket_name:
+        return False
+
+    try:
+        from google.cloud import storage as gcs_lib
+
+        client = gcs_lib.Client()
+        bucket = client.bucket(bucket_name)
+
+        now = datetime.datetime.utcnow()
+        date_str = now.strftime("%Y-%m-%d")
+        time_str = now.strftime("%H-%M-%S")
+        blob_path = f"ingest_audit/{entity}/{date_str}/{time_str}_{filename}"
+
+        blob = bucket.blob(blob_path)
+        blob.metadata = {
+            "entity":       entity,
+            "source":       source,  # "csv_upload" | "xlsx_upload" | "manual_entry"
+            "row_count":    str(row_count),
+            "ingested_at":  now.isoformat(),
+        }
+        blob.upload_from_string(file_bytes)
+        return True
+    except Exception as e:
+        st.warning(f"Audit archive skipped: {e}")
+        return False
 
 API_FN = {
     "projects":          create_project,
@@ -302,7 +347,10 @@ with tab1:
     uploaded_file = st.file_uploader("Upload CSV or XLSX", type=["csv", "xlsx"])
 
     if uploaded_file:
-        if uploaded_file.name.endswith(".xlsx"):
+        is_xlsx    = uploaded_file.name.endswith(".xlsx")
+        file_bytes = uploaded_file.getvalue()  # capture before pandas reads the stream
+
+        if is_xlsx:
             df = pd.read_excel(uploaded_file, dtype=str).fillna("")
         else:
             df = pd.read_csv(uploaded_file, dtype=str).fillna("")
@@ -348,6 +396,14 @@ with tab1:
             if errors:
                 st.error("Errors:")
                 st.json(errors)
+
+            if success > 0:
+                archived = audit_archive(
+                    entity, file_bytes, uploaded_file.name, success,
+                    source="xlsx_upload" if is_xlsx else "csv_upload"
+                )
+                if archived:
+                    st.caption("📦 Original file archived for audit.")
 
 
 # ── Manual Entry ──────────────────────────────────────────────────────────────
@@ -443,6 +499,15 @@ with tab2:
         if errors:
             st.error("Some rows failed")
             st.json(errors)
+
+        if success > 0:
+            snapshot_bytes = edited_df.to_csv(index=False).encode("utf-8")
+            archived = audit_archive(
+                entity, snapshot_bytes, f"manual_entry_{entity}.csv", success,
+                source="manual_entry"
+            )
+            if archived:
+                st.caption("📦 Submission snapshot archived for audit.")
 
 
 # ── Templates ─────────────────────────────────────────────────────────────────

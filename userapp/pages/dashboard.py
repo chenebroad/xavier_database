@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os
 from pathlib import Path
 
-API_BASE = "https://xavier-db-dev-134042435125.us-central1.run.app"
+API_BASE = st.secrets.get("API_BASE") or os.getenv("API_BASE") \
+    or "https://xavier-db-dev-134042435125.us-central1.run.app"
 
 
 def fetch(endpoint: str):

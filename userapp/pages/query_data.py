@@ -24,21 +24,22 @@ TABLES = {
     "pools":              {"editable": True},
     "pool_members":       {"editable": False},  # junction
     "sequencing_runs":    {"editable": True},
-    "flowcell_libraries": {"editable": False},  # junction-like
+    "flowcell_libraries": {"editable": True},  # has surrogate id + PATCH/DELETE endpoints
     "files":              {"editable": True},
 }
 
 # Maps table names to their delete API functions.
 # Junction tables are omitted — they have no surrogate id column.
 DELETE_FN = {
-    "projects":        delete_project,
-    "subjects":        delete_subject,
-    "samples":         delete_sample,
-    "cohorts":         delete_cohort,
-    "experiments":     delete_experiment,
-    "pools":           delete_pool,
-    "sequencing_runs": delete_run,
-    "files":           delete_file,
+    "projects":           delete_project,
+    "subjects":           delete_subject,
+    "samples":            delete_sample,
+    "cohorts":            delete_cohort,
+    "experiments":        delete_experiment,
+    "pools":              delete_pool,
+    "sequencing_runs":    delete_run,
+    "flowcell_libraries": delete_flowcell_library,
+    "files":              delete_file,
 }
 
 QUICK_QUERIES = {

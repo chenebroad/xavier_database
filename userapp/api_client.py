@@ -1,7 +1,13 @@
 import requests
 import json
+import os
+import streamlit as st
 
-BASE_URL = "https://xavier-db-dev-134042435125.us-central1.run.app"
+try:
+    BASE_URL = st.secrets.get("API_BASE") or os.getenv("API_BASE") \
+        or "https://xavier-db-dev-134042435125.us-central1.run.app"
+except Exception:
+    BASE_URL = os.getenv("API_BASE") or "https://xavier-db-dev-134042435125.us-central1.run.app"
 
 # -------------------------
 # Helpers
